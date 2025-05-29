@@ -1,5 +1,5 @@
-import './style.css'
-import { setupCounter } from './counter.ts'
+// import './style.css'
+// import { setupCounter } from './counter.ts'
+import { Counter } from './counter.ts'
 
-
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+new Counter(document.querySelector<HTMLButtonElement>('#counter')!)
