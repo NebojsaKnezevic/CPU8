@@ -31,7 +31,7 @@ export class NandGate {
 export class NotGate {
   private input: Bit = 0;
 
-  setInput(a: Bit): void {
+  setInputs(a: Bit): void {
     this.input = a;
   }
 
