@@ -1,16 +1,8 @@
-// /cpu8
-//   /logic
-//     logicGates.js
-//   /alu
-//     alu.js
-//   /registers
-//     register.js
-//   controlUnit.js
-//   cpu.js
+import type { Bit } from "../../interface/interfaces";
 
 //you can build entire CPU with NAND OR NOR
 
-export type Bit = 0 | 1;
+
 
 // NAND Gate
 export class NandGate {
@@ -115,3 +107,5 @@ export class XnorGate {
     return this.inputA === this.inputB ? 1 : 0;
   }
 }
+
+

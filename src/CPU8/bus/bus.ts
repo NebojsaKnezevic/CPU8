@@ -1,7 +1,4 @@
-import type { Bit } from "../logic/logic-gates";
-
-
-export type Byte = [Bit, Bit, Bit, Bit, Bit, Bit, Bit, Bit];
+import type { Byte } from "../../interface/interfaces";
 
 
 export class Bus{
