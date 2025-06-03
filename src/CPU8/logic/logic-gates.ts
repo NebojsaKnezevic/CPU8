@@ -23,7 +23,8 @@ export class NandGate {
   }
 
   getOutput(): Bit {
-    return !(this.inputA && this.inputB) ? 1 : 0;
+    let x = !(this.inputA && this.inputB) ? 1 : 0;
+    return x as Bit;
   }
 }
 
