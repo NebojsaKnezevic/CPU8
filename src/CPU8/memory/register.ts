@@ -1,5 +1,5 @@
-import type { Bus, Byte } from "../bus/bus";
-import type { Bit } from "../logic/logic-gates";
+import type { Bus } from "../bus/bus";
+import type { Bit, Byte } from "../../interface/interfaces";
 import { ByteMemory } from "./byte-memory";
 import { EnableGate } from "./enable-gate";
 

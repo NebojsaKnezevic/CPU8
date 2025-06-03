@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
-import { Bus, type Byte } from '../CPU8/bus/bus';
+import { Bus } from '../CPU8/bus/bus';
 import { EnableGate } from '../CPU8/memory/enable-gate';
+import type { Byte } from '../interface/interfaces';
 
 
 
@@ -9,7 +10,7 @@ describe("EnableGate", () => {
         const bus: Bus = new Bus();
         const enableDate: EnableGate = new EnableGate(bus);
 
-        
+
         let testBusData: Byte = [1,1,1,0,0,0,0,0];
 
         enableDate.getDataOnBus(testBusData, 0)

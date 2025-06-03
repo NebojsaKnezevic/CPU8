@@ -1,4 +1,5 @@
-import { NandGate, type Bit } from "../logic/logic-gates";
+import type { Bit } from "../../interface/interfaces";
+import { NandGate} from "../logic/logic-gates";
 
 export class BitMemory {
   private q: Bit = 0;

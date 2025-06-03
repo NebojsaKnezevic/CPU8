@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { Bus, type Byte } from "../CPU8/bus/bus";
+import { Bus } from "../CPU8/bus/bus";
 import { Register } from "../CPU8/memory/register";
-import type { Bit } from "../CPU8/logic/logic-gates";
+import type { Bit } from "../interface/interfaces";
 
 
 

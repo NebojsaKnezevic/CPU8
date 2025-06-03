@@ -1,6 +1,7 @@
 import { WORD_WIDTH } from "../../constants/config";
-import type { Bus, Byte } from "../bus/bus";
-import { AndGate, type Bit } from "../logic/logic-gates"
+import type { Bus } from "../bus/bus";
+import { AndGate } from "../logic/logic-gates"
+import {type Bit, type Byte} from "../../interface/interfaces.ts"
 
 
 export class EnableGate {

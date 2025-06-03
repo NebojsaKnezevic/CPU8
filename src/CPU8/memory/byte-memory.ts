@@ -1,6 +1,6 @@
 import { WORD_WIDTH } from "../../constants/config";
-import type { Bus, Byte } from "../bus/bus";
-import type { Bit } from "../logic/logic-gates";
+import type { Bus } from "../bus/bus";
+import type { Bit, Byte } from "../../interface/interfaces.ts";
 import { BitMemory } from "./bit-memory";
 
 
