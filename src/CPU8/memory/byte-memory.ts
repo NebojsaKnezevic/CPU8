@@ -15,22 +15,23 @@ export class ByteMemory {
     }
 
     setInputs(s: Bit) {
-        // if (s === 1) {
+        if (s) {
             const output: Byte = this.bus.getOutput();
             // console.log(this.bus)
             for (let i = 0; i < output.length; i++) {
                 this.byte[i].setInputs(s, output[i]);
             }
-        // }
-
-    }
-
-    getDataOnBus(e: Bit) {
-        if(e === 1){
-            this.bus
-            .setInputs(this.byte.map(bit => bit.getOutput()) as Byte);
         }
+
     }
+
+    //SHOULD NOT BE USED, ONLY FOR TESTING PURPOSES!!!!!!
+    // getDataOnBus(e: Bit) {
+    //     if(e === 1){
+    //         this.bus
+    //         .setInputs(this.byte.map(bit => bit.getOutput()) as Byte);
+    //     }
+    // }
 
     getData() {
         return this.byte.map(bit => bit.getOutput()) as Byte;
