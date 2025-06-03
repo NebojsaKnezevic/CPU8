@@ -29,7 +29,7 @@ export class NotGate {
   }
 
   getOutput(): Bit {
-    return this.input ? 0 : 1;
+    return this.input ? 0 : 1 as Bit;
   }
 }
 
