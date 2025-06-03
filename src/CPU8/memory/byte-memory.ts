@@ -1,32 +1,27 @@
+import { WORD_WIDTH } from "../../constants/config";
 import type { Bus, Byte } from "../bus/bus";
 import type { Bit } from "../logic/logic-gates";
 import { BitMemory } from "./bit-memory";
 
 
-type BitMemoryByte = [
-    BitMemory, BitMemory, BitMemory, BitMemory,
-    BitMemory, BitMemory, BitMemory, BitMemory
-];
-
 export class ByteMemory {
-    private byte: BitMemoryByte;
+    private byte: BitMemory[];
     private bus: Bus;
 
     constructor(bus: Bus) {
         this.bus = bus;
         this.byte =
-            Array.from({ length: 8 }, () => new BitMemory()) as BitMemoryByte;
+            Array.from({ length: WORD_WIDTH }, () => new BitMemory());
     }
 
     setInputs(s: Bit) {
-        console.log(s)
-        if (s === 1) {
+        // if (s === 1) {
             const output: Byte = this.bus.getOutput();
             // console.log(this.bus)
             for (let i = 0; i < output.length; i++) {
                 this.byte[i].setInputs(s, output[i]);
             }
-        }
+        // }
 
     }
 
