@@ -43,8 +43,8 @@ export class RamCell{
         this.or.setInputs(this.reset, hvs);
         const resetHVS = this.or.getOutput();
 
-        this.register.setInputs(hvs);
-        this.register.getDataOnBus(resetHVS);
+        this.register.setInputs(resetHVS);
+        this.register.getDataOnBus(hve);
     }
 
     getData(){
