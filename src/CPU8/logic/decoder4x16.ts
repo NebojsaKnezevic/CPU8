@@ -1,4 +1,4 @@
-import type { Bit, Byte, Word } from "../../interface/interfaces";
+import type { Bit, Word } from "../../interface/interfaces";
 import { Decoder3x8 } from "./decoder3x8";
 import { AndGate, NotGate } from "./logic-gates";
 
@@ -25,11 +25,11 @@ export class Decoder4x16 {
         this.d = d;
 
         const notGate = new NotGate();
-        notGate.setInputs(a);
+        notGate.setInputs(this.a);
         this.notA = notGate.getOutput();
 
-        this.decoderLow.setInputs(b, c, d);
-        this.decoderHigh.setInputs(b, c, d);
+        this.decoderLow.setInputs(this.b, this.c, this.d);
+        this.decoderHigh.setInputs(this.b, this.c, this.d);
     }
 
     getOutput(): Word {

@@ -45,6 +45,12 @@ export class RamCell{
 
         this.register.setInputs(resetHVS);
         this.register.getDataOnBus(hve);
+
+        this.h = 0;
+        this.v = 0;
+        this.s = 0;
+        this.e = 0;
+        this.reset = 0;
     }
 
     getData(){
