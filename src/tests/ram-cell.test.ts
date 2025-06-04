@@ -14,30 +14,84 @@ describe("RamCell", () => {
         // s and e and reset are signals from control unit 
         // bus purpose is to set data on bus for testing purposes
         const testCases = [
-            { h: 1 as Bit, v: 1 as Bit, s: 0 as Bit, e: 0 as Bit, reset: 0 as Bit, busData: [1, 1, 0, 0, 0, 0, 1, 1] as Byte, shouldEqual: false },
-            { h: 1 as Bit, v: 1 as Bit, s: 0 as Bit, e: 1 as Bit, reset: 0 as Bit, shouldEqual: false },
-            { h: 1 as Bit, v: 1 as Bit, s: 1 as Bit, e: 0 as Bit, reset: 0 as Bit, shouldEqual: true },
-            { h: 1 as Bit, v: 1 as Bit, s: 1 as Bit, e: 1 as Bit, reset: 0 as Bit, shouldEqual: true },
-            { h: 1 as Bit, v: 1 as Bit, s: 0 as Bit, e: 0 as Bit, reset: 0 as Bit, busData: [1, 1, 0, 1, 1, 0, 1, 1] as Byte, shouldEqual: false },
-            { h: 1 as Bit, v: 1 as Bit, s: 1 as Bit, e: 0 as Bit, reset: 0 as Bit, shouldEqual: true },
-            { h: 1 as Bit, v: 1 as Bit, s: 0 as Bit, e: 0 as Bit, reset: 0 as Bit, busData: [1, 1, 0, 0, 0, 0, 1, 1] as Byte, shouldEqual: false },
-            { h: 1 as Bit, v: 1 as Bit, s: 0 as Bit, e: 1 as Bit, reset: 0 as Bit, shouldEqual: false },
-            { h: 1 as Bit, v: 1 as Bit, s: 1 as Bit, e: 1 as Bit, reset: 0 as Bit, shouldEqual: true },
+
+            { 
+                h: 1 as Bit, 
+                v: 1 as Bit, 
+                s: 0 as Bit, 
+                e: 0 as Bit, 
+                reset: 0 as Bit, 
+                busData: [1, 1, 0, 0, 0, 0, 1, 1] as Byte, 
+                shouldEqual: false 
+            },
+            { 
+                h: 1 as Bit, 
+                v: 1 as Bit, 
+                s: 1 as Bit, 
+                e: 0 as Bit, 
+                reset: 0 as Bit, 
+                busData: [1, 1, 0, 0, 0, 0, 1, 1] as Byte, 
+                shouldEqual: true 
+            },
+            { 
+                h: 1 as Bit, 
+                v: 1 as Bit, 
+                s: 0 as Bit, 
+                e: 0 as Bit, 
+                reset: 0 as Bit, 
+                busData: [1, 1, 0, 1, 1, 0, 1, 1] as Byte, 
+                shouldEqual: false 
+            },
+            { 
+                h: 1 as Bit, 
+                v: 1 as Bit, 
+                s: 1 as Bit, 
+                e: 0 as Bit, 
+                reset: 0 as Bit, 
+                busData: [1, 1, 0, 1, 1, 0, 1, 1] as Byte, 
+                shouldEqual: true 
+            },
+            { 
+                h: 1 as Bit, 
+                v: 1 as Bit, 
+                s: 0 as Bit, 
+                e: 1 as Bit, 
+                reset: 0 as Bit, 
+                busData: [1, 1, 1, 1, 1, 0, 0, 0] as Byte, 
+                shouldEqual: true 
+            },
+            { 
+                h: 1 as Bit, 
+                v: 1 as Bit, 
+                s: 0 as Bit, 
+                e: 0 as Bit, 
+                reset: 0 as Bit, 
+                busData: [0, 1, 1, 1, 1, 0, 0, 0] as Byte, 
+                shouldEqual: false 
+            },
+          
         ];
 
+        let regD = [0,0,0,0,0,0,0,0] as Byte
         for (const { h, v, s, e, reset, busData, shouldEqual } of testCases) {
-
+            
             if(busData){
                 bus.setInputs(busData);
             }
+
+            if(s){
+                regD = busData;
+            }
           
             ramCell.setInputs(h, v, s, e, reset);
-
+          
             if (shouldEqual) {
                 expect(bus.getOutput()).toEqual(ramCell.getData());
+                expect(regD).toEqual(bus.getOutput());
             }
             else {
                 expect(bus.getOutput()).not.toEqual(ramCell.getData());
+                expect(regD).not.toEqual(bus.getOutput());
             }
 
 
