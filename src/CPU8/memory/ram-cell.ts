@@ -1,0 +1,54 @@
+import type { Bit } from "../../interface/interfaces";
+import { Bus } from "../bus/bus";
+import { AndGate, OrGate } from "../logic/logic-gates";
+import { Register } from "./register";
+
+
+
+export class RamCell{
+    private h: Bit = 0;
+    private v: Bit = 0;
+    private s: Bit = 0;
+    private e: Bit = 0;
+
+    private reset: Bit = 0;
+
+    private ands: AndGate[];
+    private or: OrGate;
+
+    private register: Register;
+
+    constructor(bus: Bus){
+        this.ands = Array.from({length:3}, () => new AndGate())
+        this.or = new OrGate();
+        this.register = new Register(bus);
+    }
+
+    setInputs(h: Bit, v: Bit, s: Bit, e: Bit, reset: Bit) {
+        this.h = h;
+        this.v = v;
+        this.s = s;
+        this.e = e;
+        this.reset = reset;
+    
+        this.ands[0].setInputs(this.h, this.v);
+        const hv = this.ands[0].getOutput();
+    
+        this.ands[1].setInputs(hv, this.s);
+        const hvs = this.ands[1].getOutput();
+    
+        this.ands[2].setInputs(hv, this.e);
+        const hve = this.ands[2].getOutput();
+    
+        this.or.setInputs(this.reset, hvs);
+        const resetHVS = this.or.getOutput();
+
+        this.register.setInputs(hvs);
+        this.register.getDataOnBus(resetHVS);
+    }
+
+    getData(){
+        return this.register.getDataOnBus(0);
+    }
+    
+}
