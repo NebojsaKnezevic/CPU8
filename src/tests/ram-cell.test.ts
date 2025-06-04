@@ -93,9 +93,6 @@ describe("RamCell", () => {
                 expect(bus.getOutput()).not.toEqual(ramCell.getData());
                 expect(regD).not.toEqual(bus.getOutput());
             }
-
-
-
         }
     });
 });

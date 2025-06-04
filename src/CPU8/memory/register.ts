@@ -31,4 +31,8 @@ export class Register{
         return this.byteGate.getData() as Byte;
         
     }
+
+    getData(){
+        return this.byteGate.getData() as Byte;
+    }
 }

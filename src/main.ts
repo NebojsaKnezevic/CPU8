@@ -1,9 +1,12 @@
 // import './style.css'
 // import { setupCounter } from './counter.ts'
 
+import { Bus } from "./CPU8/bus/bus";
+import { Ram } from "./CPU8/memory/ram";
+
 // import { BitMemory } from './CPU8/memory/bit-memory.ts';
 
-console.log("dsa")
+// console.log("dsa")
 //dsa
 // PLAN...
 
@@ -33,3 +36,32 @@ console.log("dsa")
 
 //you can build entire CPU with NAND OR NOR
 
+const bus = new Bus();
+const ram = new Ram(bus);
+
+bus.setInputs([0,0,0,0,0,0,0,0]);
+ram.setMarInputs(1);
+bus.setInputs([0,0,0,0,0,0,0,1]);
+ram.setInputs(1,0)
+
+bus.setInputs([0,0,0,0,0,0,0,1]);
+ram.setMarInputs(1);
+bus.setInputs([0,0,0,0,0,0,1,1]);
+ram.setInputs(1,0)
+
+bus.setInputs([0,0,0,0,0,0,1,0]);
+ram.setMarInputs(1);
+bus.setInputs([0,0,0,0,0,1,1,1]);
+ram.setInputs(1,0)
+
+bus.setInputs([0,0,0,1,0,0,0,0]);
+ram.setMarInputs(1);
+bus.setInputs([0,0,0,0,1,1,1,1]);
+ram.setInputs(1,0)
+
+console.log(ram)
+
+// ram.setInputs(1,0)
+// bus.setInputs([1,1,1,1,1,1,1,1]);
+// ram.setInputs(0,0)
+// console.log(bus.getOutput())
