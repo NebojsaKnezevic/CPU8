@@ -5,7 +5,7 @@ import { NUM_MAP, WORD_WIDTH } from "./config";
 
 export function byteToNumber(byte: Byte): number {
     let value = 0;
-    let reversed = byte.reverse();
+    let reversed = byte;
     for (let i = 0; i < WORD_WIDTH; i++) {
         value += reversed[i] * NUM_MAP[i];
     }
@@ -19,3 +19,4 @@ export function numberToByte(num: number): Byte {
     }
     return byte.reverse() as Byte;
 }
+

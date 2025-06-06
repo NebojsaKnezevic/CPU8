@@ -25,6 +25,14 @@ export class ByteMemory {
 
     }
 
+    // Use carefully and only when needed!!!!!!!
+    setInputsFromNonBus(a: Byte){
+        const output: Byte = a;
+        for (let i = 0; i < output.length; i++) {
+            this.byte[i].setInputs(1, output[i]);
+        }
+    }
+
     //SHOULD NOT BE USED, ONLY FOR TESTING PURPOSES!!!!!!
     // getDataOnBus(e: Bit) {
     //     if(e === 1){

@@ -49,11 +49,11 @@ export class Ram {
         let column = this.columnDecoder.getOutput();
         let row = this.rowDecoder.getOutput();
 
-        let x = this.rowColumn(row)
-        let y = this.rowColumn(column)
+        let x = this.rowColumn(column)
+        let y = this.rowColumn(row)
         // console.log(row, column)
         // console.log(x, y)
-        return this.dataGrid[x][y];
+        return this.dataGrid[y][x];
     }
 
     private rowColumn(x: Word): number {
