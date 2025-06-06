@@ -1,5 +1,5 @@
 import type { Bit, Nibble } from "../../interface/interfaces";
-import { AndGate, NandGate, NotGate } from "./logic-gates";
+import { AndGate, NotGate } from "./logic-gates";
 
 export class Decoder2x4 {
     private a: Bit = 0;
@@ -21,6 +21,8 @@ export class Decoder2x4 {
     }
 
     setInputs(a: Bit, b: Bit) {
+        this.a = 0;
+        this.b = 0;
         this.a = a;
         this.b = b;
 
