@@ -24,6 +24,11 @@ export class Register{
         }
     }
 
+    // Use carefully and only when needed!!!!!!!
+    setInputsFromNonBus(a: Byte){
+        this.byteGate.setInputsFromNonBus(a);
+    }
+
     getDataOnBus(e: Bit){
         if(e){
             this.enableGate.getDataOnBus(this.byteGate.getData(), e);
@@ -33,6 +38,6 @@ export class Register{
     }
 
     getData(){
-        return this.byteGate.getData() as Byte;
+        return [...this.byteGate.getData()] as Byte;
     }
 }

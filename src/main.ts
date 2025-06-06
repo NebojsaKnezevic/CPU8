@@ -1,6 +1,7 @@
 // import './style.css'
 // import { setupCounter } from './counter.ts'
 
+import { byteToNumber, numberToByte } from "./constants/byte-conversion";
 import { Bus } from "./CPU8/bus/bus";
 import { Ram } from "./CPU8/memory/ram";
 
@@ -61,6 +62,9 @@ bus.setInputs([0,0,0,0,1,1,1,1]);
 ram.setInputs(1,0)
 
 console.log(ram)
+
+console.log(numberToByte(3))
+console.log(byteToNumber(numberToByte(3)))
 
 // ram.setInputs(1,0)
 // bus.setInputs([1,1,1,1,1,1,1,1]);
