@@ -5,8 +5,8 @@ import { Shr } from "../CPU8/logic/shr";
 
 
 describe("SHR", () => {
+    const shr = new Shr();
     it("should act as divider by 2", () => {
-        const shr = new Shr();
 
         shr.setInputs(numberToByte(4));
         const result = shr.getOutput();
@@ -15,7 +15,6 @@ describe("SHR", () => {
     })
 
     it("should act as divider by 2", () => {
-        const shr = new Shr();
 
         shr.setInputs(numberToByte(200));
         const result = shr.getOutput();
@@ -25,7 +24,6 @@ describe("SHR", () => {
 
     
     it("should act as divider by 2, there is reminder 1", () => {
-        const shr = new Shr();
 
         shr.setInputs(numberToByte(33));
         const result = shr.getOutput();
@@ -34,7 +32,6 @@ describe("SHR", () => {
     })
 
     it("should act as divider by 2, there is reminder 1", () => {
-        const shr = new Shr();
 
         shr.setInputs(numberToByte(253));
         const result = shr.getOutput();

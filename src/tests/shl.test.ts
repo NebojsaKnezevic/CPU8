@@ -4,8 +4,9 @@ import { numberToByte } from "../constants/byte-conversion";
 
 
 describe("SHL", () => {
+    const shl = new Shl();
     it("should act as multiplier by 2", () => {
-        const shl = new Shl();
+        
 
         shl.setInputs(numberToByte(2));
         const result = shl.getOutput();
@@ -13,7 +14,6 @@ describe("SHL", () => {
         expect(numberToByte(4)).toEqual(result);
     })
     it("should act as multiplier by 2", () => {
-        const shl = new Shl();
 
         shl.setInputs(numberToByte(1));
         const result = shl.getOutput();
@@ -22,7 +22,6 @@ describe("SHL", () => {
     })
 
     it("should act as multiplier by 2", () => {
-        const shl = new Shl();
         //ovde sam mnozio sa 2, 2 puta: 10 x 2 x 2 = 40
         shl.setInputs(numberToByte(10));
         shl.setInputs(shl.getOutput());
@@ -32,7 +31,6 @@ describe("SHL", () => {
     })
 
     it("should act as multiplier by 2", () => {
-        const shl = new Shl();
 
         shl.setInputs(numberToByte(255));
         const result = shl.getOutput();

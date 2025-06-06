@@ -5,13 +5,14 @@ import { numberToByte } from "../constants/byte-conversion";
 
 
 describe("Adder8", () => {
+    
+    const adder = new Adder8();
     it("adds 1 + 2 = 3", () => {
         const a: Byte = numberToByte(1); 
         const b: Byte = numberToByte(2); 
         const expected: Byte = numberToByte(3); 
         const expectedCarry: Bit = 0;
 
-        const adder = new Adder8();
         adder.setInputs(a, b);
         const [out, carry] = adder.getOutput();
 
@@ -25,7 +26,6 @@ describe("Adder8", () => {
         const expected: Byte = numberToByte(0); 
         const expectedCarry: Bit = 1;
 
-        const adder = new Adder8();
         adder.setInputs(a, b);
         const [out, carry] = adder.getOutput();
 
@@ -39,7 +39,6 @@ describe("Adder8", () => {
         const expected: Byte = numberToByte(3); 
         const expectedCarry: Bit = 0;
 
-        const adder = new Adder8();
         adder.setInputs(a, b, 1); // carry-in
         const [out, carry] = adder.getOutput();
 
@@ -53,7 +52,6 @@ describe("Adder8", () => {
         const expected: Byte = numberToByte(210); 
         const expectedCarry: Bit = 0;
 
-        const adder = new Adder8();
         adder.setInputs(a, b, 0); 
         const [out, carry] = adder.getOutput();
 
@@ -67,7 +65,6 @@ describe("Adder8", () => {
         const expected: Byte = numberToByte(54); 
         const expectedCarry: Bit = 1;
 
-        const adder = new Adder8();
         adder.setInputs(a, b, 0); 
         const [out, carry] = adder.getOutput();
 
