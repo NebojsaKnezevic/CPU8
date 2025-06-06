@@ -9,7 +9,7 @@ describe("Decoder2x4", () => {
     it("should output correct one-hot signal for all 4 input combinations", () => {
         for (let i = 0; i < 4; i++) {
             let x = numberToByte(i);
-            const [a, b] = [x[1], x[0]]; // MSB, LSB
+            const [a, b] = [x[x.length - 2], x[x.length - 1]]; // MSB, LSB
             const decoder = new Decoder2x4();
             decoder.setInputs(a, b);
             const output = decoder.getOutput();

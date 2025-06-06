@@ -19,6 +19,9 @@ export class Decoder3x8 {
     }
 
     setInputs(a: Bit, b: Bit, c: Bit) {
+        this.a = 0;
+        this.b = 0;
+        this.c = 0;
         this.a = a;
         this.b = b;
         this.c = c;
@@ -27,8 +30,8 @@ export class Decoder3x8 {
         na.setInputs(a);
         this.na = na.getOutput();
 
-        this.decoder2x4_1.setInputs(b,c);
-        this.decoder2x4_2.setInputs(b,c);
+        this.decoder2x4_1.setInputs(this.b,this.c);
+        this.decoder2x4_2.setInputs(this.b,this.c);
     }
 
     getOutput(): Byte {

@@ -36,6 +36,7 @@ import { Ram } from "./CPU8/memory/ram";
 
 //you can build entire CPU with NAND OR NOR
 
+
 const bus = new Bus();
 const ram = new Ram(bus);
 

@@ -1,4 +1,4 @@
-import type { Bit, Byte, Word } from "../../interface/interfaces";
+import type { Bit, Word } from "../../interface/interfaces";
 import { Bus } from "../bus/bus";
 import { Decoder4x16 } from "../logic/decoder4x16";
 import { RamCell } from "./ram-cell";

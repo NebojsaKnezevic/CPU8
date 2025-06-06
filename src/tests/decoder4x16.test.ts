@@ -8,7 +8,7 @@ describe("Decoder4x16", () => {
     it("should output correct one-hot signal for all 16 input combinations", () => {
         for (let i = 0; i < 16; i++) {
             let x = numberToByte(i);
-            const [a, b, c, d] = [x[3], x[2], x[1], x[0]]; // MSB, LSB
+            const [a, b, c, d] = [x[x.length - 4], x[x.length - 3], x[x.length - 2], x[x.length - 1]]; // MSB, LSB
             const decoder = new Decoder4x16();
             decoder.setInputs(a, b, c, d);
             const output = decoder.getOutput();

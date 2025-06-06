@@ -8,7 +8,7 @@ describe("Decoder3x8", () => {
     it("should output correct one-hot signal for all 8 input combinations", () => {
         for (let i = 0; i < 8; i++) {
             let x = numberToByte(i);
-            const [a, b, c] = [x[2], x[1], x[0]]; // MSB, LSB
+            const [a, b, c] = [x[x.length - 3], x[x.length - 2], x[x.length - 1]]; // MSB, LSB
             const decoder = new Decoder3x8();
             decoder.setInputs(a, b, c);
             const output = decoder.getOutput();

@@ -19,6 +19,10 @@ export class Decoder4x16 {
     }
 
     setInputs(a: Bit, b: Bit, c: Bit, d: Bit) {
+        this.a = 0;
+        this.b = 0;
+        this.c = 0;
+        this.d = 0;
         this.a = a;
         this.b = b;
         this.c = c;
