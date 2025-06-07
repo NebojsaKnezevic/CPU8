@@ -1,6 +1,6 @@
 import { WORD_WIDTH } from "../../constants/config";
 import type { Byte } from "../../interface/interfaces";
-import { AndGate, OrGate } from "./logic-gates";
+import {  OrGate } from "./logic-gates";
 
 
 export class Or8{

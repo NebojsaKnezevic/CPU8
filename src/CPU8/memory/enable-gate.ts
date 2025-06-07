@@ -15,7 +15,7 @@ export class EnableGate {
 
     //We just get/pass new data on the BUS
     getDataOnBus(inputs: Byte, e: Bit) {
-        if (e) {
+        // if (e) {
 
             let results: Byte = inputs.map((input, i) => {
                 this.data[i].setInputs(input, e);
@@ -23,6 +23,6 @@ export class EnableGate {
             }) as Byte;
 
             this.bus.setInputs(results);
-        }
+        // }
     }
 }
