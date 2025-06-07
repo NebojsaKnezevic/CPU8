@@ -15,13 +15,13 @@ export class ByteMemory {
     }
 
     setInputs(s: Bit) {
-        if (s) {
+        // if (s) {
             const output: Byte = this.bus.getOutput();
             // console.log(this.bus)
             for (let i = 0; i < output.length; i++) {
                 this.byte[i].setInputs(s, output[i]);
             }
-        }
+        // }
 
     }
 

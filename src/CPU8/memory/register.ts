@@ -19,9 +19,9 @@ export class Register{
     }
 
     setInputs(s: Bit){
-        if(s){
+        // if(s){
             this.byteGate.setInputs(s); 
-        }
+        // }
     }
 
     // Use carefully and only when needed!!!!!!!

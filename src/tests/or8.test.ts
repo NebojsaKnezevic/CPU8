@@ -12,7 +12,7 @@ describe("Or8", () => {
         const expected = numberToByte(0);
         expect(result).toEqual(expected);
     });
-
+    
     it("should return 11111111 when ORing 00000000 & 11111111", () => {
         or.setInputs(numberToByte(0), numberToByte(255));
         const result = or.getOutput();
