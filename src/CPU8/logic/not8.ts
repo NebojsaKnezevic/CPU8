@@ -12,7 +12,7 @@ export class Not8{
 
     setInputs(a: Byte){
         for (let i = this.not.length - 1; i >= 0; i--) {
-            console.log( this.not[i])
+         
           this.not[i].setInputs(a[i]);
         }
     }

@@ -8,6 +8,9 @@ import type { Bit } from "../../interface/interfaces";
 export class NandGate {
   private inputA: Bit = 0;
   private inputB: Bit = 0;
+  static  counter = 0;
+
+  constructor(){NandGate.counter++;}
 
   setInputs(a: Bit, b: Bit): void {
     this.inputA = a;
@@ -17,6 +20,10 @@ export class NandGate {
   getOutput(): Bit {
     let x = !(this.inputA && this.inputB) ? 1 : 0;
     return x as Bit;
+  }
+
+  nand(a: Bit, b: Bit): Bit {
+    return !(a && b) ? 1 : 0;
   }
 }
 

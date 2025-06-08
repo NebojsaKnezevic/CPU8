@@ -1,4 +1,4 @@
-import type { Byte } from "../../interface/interfaces";
+import type { Bit, Byte } from "../../interface/interfaces";
 
 
 export class Bus{
@@ -10,5 +10,17 @@ export class Bus{
 
     public getOutput(): Byte {
         return [...this.data];
+    }
+}
+
+export class BitBus{
+    private data: Bit = 0;
+
+    public setInputs(bit: Bit): void {
+        this.data = bit;
+    }
+
+    public getOutput(): Bit {
+        return this.data;
     }
 }
