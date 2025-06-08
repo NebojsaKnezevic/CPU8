@@ -1,3 +1,4 @@
+import {  numberToByte } from "../../constants/byte-conversion";
 import { WORD_WIDTH } from "../../constants/config";
 import type { Bit, Byte } from "../../interface/interfaces";
 import { Comparator } from "./comparator";
@@ -19,31 +20,39 @@ export class Comparator8 {
             this.comparators[i].setInputs(a[i], b[i]);
         }
 
-        const neq0 = this.comparators[0].getOutput()[2];
-        const neq1 = this.comparators[1].getOutput()[2];
-        this.orGates[0].setInputs(neq0, neq1);
+        let prevOutput = this.comparators[0].getOutput()[2]; // NEQ za MSB
 
-        let prevOutput = this.orGates[0].getOutput();
-        for (let i = 2; i < 8; i++) {
+        for (let i = 1; i < 8; i++) {
             const neq = this.comparators[i].getOutput()[2];
             this.orGates[i - 1].setInputs(prevOutput, neq);
             prevOutput = this.orGates[i - 1].getOutput();
         }
     }
 
-    getOutput(): [ Bit, Bit] {
+    getOutput(): [ Bit, Bit, Byte] {
         let less: Bit = 0;
         let greater: Bit = 0;
-
-        for (let i = 0; i < 8; i++) {
-            const [l, g, n] = this.comparators[i].getOutput();
-            less = l;
-            greater = g;
-            if (l || g) break; 
+    
+        // from MSB to LSB to find first unequal bit
+        for (let i = 0; i < WORD_WIDTH ; i++) {
+            const [l, g, _n] = this.comparators[i].getOutput();
+            if (l === 1 || g === 1) {
+                less = l;
+                greater = g;
+                break;
+            }
         }
-
-        const notEqual = this.orGates[6].getOutput();
-
-        return [ greater, notEqual];
+    
+        const equal: Bit = less === 0 && greater === 0 ? 1 : 0;
+    
+        const result: Byte = [
+            0, 0, 0, 0, 0,
+            greater,  // bit 2
+            equal,    // bit 1
+            less,     // bit 0
+            
+        ];
+    
+        return [greater, equal, result];
     }
 }

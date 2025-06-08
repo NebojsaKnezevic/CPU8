@@ -21,8 +21,8 @@ export class Decoder2x4 {
     }
 
     setInputs(a: Bit, b: Bit) {
-        this.a = 0;
-        this.b = 0;
+        // this.a = 0;
+        // this.b = 0;
         this.a = a;
         this.b = b;
 

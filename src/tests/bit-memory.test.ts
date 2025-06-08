@@ -24,19 +24,37 @@ describe('BitMemory', () => {
         bitmem.setInputs(0,1);
         expect(bitmem.getOutput()).toEqual(1)
 
+        bitmem.setInputs(1,1);
+        expect(bitmem.getOutput()).toEqual(1)
+
         bitmem.setInputs(1,0);
         expect(bitmem.getOutput()).toEqual(0)
 
         bitmem.setInputs(1,1);
         expect(bitmem.getOutput()).toEqual(1)
 
+        bitmem.setInputs(1,0);
+        expect(bitmem.getOutput()).toEqual(0)
+
+        bitmem.setInputs(0,1);
+        expect(bitmem.getOutput()).toEqual(0)
+
         bitmem.setInputs(1,1);
         expect(bitmem.getOutput()).toEqual(1)
 
-        bitmem.setInputs(0,1);
+        bitmem.setInputs(0,0);
         expect(bitmem.getOutput()).toEqual(1)
 
+        bitmem.setInputs(1,0);
+        expect(bitmem.getOutput()).toEqual(0)
+
         bitmem.setInputs(0,1);
+        expect(bitmem.getOutput()).toEqual(0)
+
+        bitmem.setInputs(1,0);
+        expect(bitmem.getOutput()).toEqual(0)
+
+        bitmem.setInputs(1,1);
         expect(bitmem.getOutput()).toEqual(1)
 
     })

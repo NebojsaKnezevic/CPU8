@@ -9,7 +9,7 @@ describe("SHR", () => {
     it("should act as divider by 2", () => {
 
         shr.setInputs(numberToByte(4));
-        const result = shr.getOutput();
+        const result = shr.getOutput()[0];
 
         expect(numberToByte(2)).toEqual(result);
     })
@@ -17,7 +17,7 @@ describe("SHR", () => {
     it("should act as divider by 2", () => {
 
         shr.setInputs(numberToByte(200));
-        const result = shr.getOutput();
+        const result = shr.getOutput()[0];
 
         expect(numberToByte(100)).toEqual(result);
     })
@@ -26,7 +26,7 @@ describe("SHR", () => {
     it("should act as divider by 2, there is reminder 1", () => {
 
         shr.setInputs(numberToByte(33));
-        const result = shr.getOutput();
+        const result = shr.getOutput()[0];
 
         expect(numberToByte(16)).toEqual(result);
     })
@@ -34,7 +34,7 @@ describe("SHR", () => {
     it("should act as divider by 2, there is reminder 1", () => {
 
         shr.setInputs(numberToByte(253));
-        const result = shr.getOutput();
+        const result = shr.getOutput()[0];
 
         expect(numberToByte(126)).toEqual(result);
     })

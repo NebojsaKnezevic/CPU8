@@ -7,25 +7,33 @@ describe("Comparator8", () => {
 
     it("should detect a < b", () => {
         comp.setInputs(numberToByte(10), numberToByte(15));
-        const [ gt, neq] = comp.getOutput();
+        const [ gt, eq] = comp.getOutput();
   
         expect(gt).toBe(0);
-        expect(neq).toBe(1);
+        expect(eq).toBe(0);
     });
 
     it("should detect a > b", () => {
         comp.setInputs(numberToByte(250), numberToByte(100));
-        const [ gt, neq] = comp.getOutput();
+        const [ gt, eq] = comp.getOutput();
       
         expect(gt).toBe(1);
-        expect(neq).toBe(1);
+        expect(eq).toBe(0);
     });
 
     it("should detect equality", () => {
         comp.setInputs(numberToByte(42), numberToByte(42));
-        const [ gt, neq] = comp.getOutput();
+        const [ gt, eq] = comp.getOutput();
    
         expect(gt).toBe(0);
-        expect(neq).toBe(0);
+        expect(eq).toBe(1);
+    });
+
+    it("should detect A > 0", () => {
+        comp.setInputs(numberToByte(1), numberToByte(0));
+        const [ gt, eq] = comp.getOutput();
+   
+        expect(gt).toBe(1);
+        expect(eq).toBe(0);
     });
 });

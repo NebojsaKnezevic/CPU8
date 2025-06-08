@@ -1,3 +1,8 @@
+-Had to change comparator logic chips and use some other. 
+-Maybe i will have to change opcode logic in ALU, so that 0,0,1 is the first operation(Adder)
+-it would be good to add separate inner busses for components such as RAM ALU and CPU. 
+
+
 # 8-bit CPU Simulation
 
 This is a project for simulating an 8-bit CPU using TypeScript. It will have a user `interface`, a `full CPU8 hardware` simulation, and an `assembler`.
@@ -69,3 +74,8 @@ To build a fully working 8-bit CPU, the following components are required:
 | `/memory`      | `bit-memory.ts`<br>`byte-memory.ts`<br>`register.ts`<br>`ram.ts` | Memory-related components        |
 | `/workers`     | `clockWorker.ts`<br>`controlUnitWorker.ts`<br>`aluWorker.ts`<br>`ramWorker.ts`<br>`busWorker.ts` | Multi-threading / simulation workers |
 | *(root)*       | `controlUnit.ts`<br>`clock.ts`<br>`cpu.ts` | Core CPU control and orchestration |
+
+
+
+
+
