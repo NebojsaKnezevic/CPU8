@@ -114,7 +114,7 @@ export class Alu {
             output.zero = this.zero.getOutput();
             
             const comparator = this.line.find(l => l.id === 64)
-            console.log(comparator?.gate.getOutput()[2])
+            // console.log(comparator?.gate.getOutput()[2])
             // a larger flag
             output.aLarger = comparator?.gate.getOutput()[0] as Bit;
 

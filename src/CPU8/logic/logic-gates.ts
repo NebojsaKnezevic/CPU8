@@ -6,26 +6,28 @@ import type { Bit } from "../../interface/interfaces";
 
 // NAND Gate
 export class NandGate {
-  private inputA: Bit = 0;
-  private inputB: Bit = 0;
-  static  counter = 0;
+  private inputs: Bit[] = [];
+  private output: Bit = 0;
+  private autoEvaluate: boolean;
 
-  constructor(){NandGate.counter++;}
+  constructor(autoEvaluate: boolean = true) {
+    this.autoEvaluate = autoEvaluate;
+  }
 
-  setInputs(a: Bit, b: Bit): void {
-    this.inputA = a;
-    this.inputB = b;
+  setInputs(...bits: Bit[]): void {
+    this.inputs = bits;
+    if (this.autoEvaluate) this.evaluate();
+  }
+
+  evaluate(): void {
+    this.output = this.inputs.every(bit => bit === 1) ? 0 : 1;
   }
 
   getOutput(): Bit {
-    let x = !(this.inputA && this.inputB) ? 1 : 0;
-    return x as Bit;
-  }
-
-  nand(a: Bit, b: Bit): Bit {
-    return !(a && b) ? 1 : 0;
+    return this.output;
   }
 }
+
 
 // NOT Gate
 export class NotGate {
