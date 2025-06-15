@@ -10,7 +10,11 @@ export class Clock {
     private clk: Bit = 0;     
     private clks: Bit = 0;    
     private clke: Bit = 0;   
-
+    
+        //in    0101 0101 
+        //clk   0110 0110
+        //clke  1110 1110
+        //clks  0100 0100
 
 
     setInputs() {
