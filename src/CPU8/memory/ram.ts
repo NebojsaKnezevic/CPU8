@@ -49,10 +49,10 @@ export class Ram {
         let column = this.columnDecoder.getOutput();
         let row = this.rowDecoder.getOutput();
 
-        let x = this.rowColumn(column)
+        let x = this.rowColumn(column.reverse() as Word)
         let y = this.rowColumn(row)
         // console.log(row, column)
-        // console.log(x, y)
+        // console.log(y,x)
         return this.dataGrid[y][x];
     }
 

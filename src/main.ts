@@ -3,6 +3,7 @@
 
 import { byteToNumber, numberToByte } from "./constants/byte-conversion";
 import { Bus } from "./CPU8/bus/bus";
+import { Bus1 } from "./CPU8/bus/bus1";
 import { Clock } from "./CPU8/clock/clock";
 import { Alu } from "./CPU8/logic/alu";
 import { Counter } from "./CPU8/logic/control-unit/counter";
@@ -78,8 +79,8 @@ import type { Bit, IAluInputs, IAluOutputs } from "./interface/interfaces";
 
 
 
-const alu1 = new Alu();
-const ram = new Ram(new Bus);
+// const alu1 = new Alu();
+// const ram = new Ram(new Bus);
 
 // alu.setInputs({
 //         a: numberToByte(1),
@@ -140,58 +141,71 @@ const stepper = new Stepper();
 // stepper.setInputs(1)
 // console.log(stepper.getOutput())
 // stepper.setInputs(0)
-console.log(stepper.getOutput())
+// console.log(stepper.getOutput())
 
-stepper.setInputs(0)
-stepper.setInputs(1)
-stepper.setInputs(1)
-stepper.setInputs(0)
+// stepper.setInputs(0)
+// stepper.setInputs(1)
+// stepper.setInputs(1)
+// stepper.setInputs(0)
 
-console.log(stepper.getOutput())
+// console.log(stepper.getOutput())
 
-stepper.setInputs(0)
-stepper.setInputs(1)
-stepper.setInputs(1)
-stepper.setInputs(0)
+// stepper.setInputs(0)
+// stepper.setInputs(1)
+// stepper.setInputs(1)
+// stepper.setInputs(0)
 
-console.log(stepper.getOutput())
+// console.log(stepper.getOutput())
 
-stepper.setInputs(0)
-stepper.setInputs(1)
-stepper.setInputs(1)
-stepper.setInputs(0)
+// stepper.setInputs(0)
+// stepper.setInputs(1)
+// stepper.setInputs(1)
+// stepper.setInputs(0)
 
-console.log(stepper.getOutput())
+// console.log(stepper.getOutput())
 
-stepper.setInputs(0)
-stepper.setInputs(1)
-stepper.setInputs(1)
-stepper.setInputs(0)
+// stepper.setInputs(0)
+// stepper.setInputs(1)
+// stepper.setInputs(1)
+// stepper.setInputs(0)
 
-console.log(stepper.getOutput())
+// console.log(stepper.getOutput())
 
-stepper.setInputs(0)
-stepper.setInputs(1)
-stepper.setInputs(1)
-stepper.setInputs(0)
+// stepper.setInputs(0)
+// stepper.setInputs(1)
+// stepper.setInputs(1)
+// stepper.setInputs(0)
 
-console.log(stepper.getOutput())
+// console.log(stepper.getOutput())
 
-stepper.setInputs(0)
-stepper.setInputs(1)
-stepper.setInputs(1)
-stepper.setInputs(0)
+// stepper.setInputs(0)
+// stepper.setInputs(1)
+// stepper.setInputs(1)
+// stepper.setInputs(0)
 
-console.log(stepper.getOutput())
+// console.log(stepper.getOutput())
 
-stepper.setInputs(0)
-stepper.setInputs(1)
-stepper.setInputs(1)
-stepper.setInputs(0)
+// stepper.setInputs(0)
+// stepper.setInputs(1)
+// stepper.setInputs(1)
+// stepper.setInputs(0)
 
-console.log(stepper.getOutput())
+// console.log(stepper.getOutput())
 
 
+const bus = new Bus()
+const ram = new Ram(bus);
+
+bus.setInputs([1,1,1,1,0,0,0,0]);
+ram.setMarInputs(1);
+bus.setInputs(numberToByte(133));
+ram.setInputs(1,0);
+console.log(ram)
+
+
+const bus1 = new Bus1();
+bus1.setInputs([1, 0, 1, 1, 0, 0, 1, 1], 1)
+console.log(bus1.getOutput())
 
 
 
