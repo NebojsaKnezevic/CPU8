@@ -44,7 +44,10 @@ export class Decoder2x4 {
             this.and00.getOutput(), 
             this.and01.getOutput(),
             this.and10.getOutput(),
-            this.and11.getOutput()
+            this.and11.getOutput(),
+            // this.and10.getOutput(),
+            // this.and01.getOutput(),
+            // this.and00.getOutput(), 
         ];
     }
 }
