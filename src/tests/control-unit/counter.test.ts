@@ -36,6 +36,7 @@ describe("Coutner", () => {
 
         counter.setInputs(1)
         expect(counter.getOutput()).toEqual([1,1,1,1,1,0]) // here at the end is different, check implementation or schema.
+          
         
         counter.setInputs(0)
         counter.setInputs(1)

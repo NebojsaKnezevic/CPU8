@@ -1,9 +1,9 @@
 import { WORD_WIDTH } from "../../constants/config";
-import type { Byte } from "../../interface/interfaces";
+import type { Byte, IBasic8 } from "../../interface/interfaces";
 import { AndGate } from "./logic-gates";
 
 
-export class And8{
+export class And8 implements IBasic8{
     private out: AndGate[];
 
     constructor(){

@@ -1,6 +1,9 @@
 import { byteToNumber, numberToByte } from "../../constants/byte-conversion";
 import type { Bit, Byte, IAluInputs, IAluOutputs } from "../../interface/interfaces";
+import  { Bus } from "../bus/bus";
+import  { Bus1 } from "../bus/bus1";
 import { EnableGate } from "../memory/enable-gate";
+import  { Register } from "../memory/register";
 import { Adder8 } from "./adder8";
 import { And8 } from "./and8";
 import { Comparator8 } from "./comparator8";
@@ -22,13 +25,17 @@ export class Alu {
         and?: AndGate
     }>;
 
-    private nand: NandGate[];
+    // private nand: NandGate[];
     private decoder3x8: Decoder3x8;
     private zero: ZeroDetector8;
 
-    private inputs: IAluInputs;
+    // private inputs: IAluInputs;
 
-    constructor() {
+    // private acc: Register;
+    // private bus: Bus;
+    // private bus1: Bus1;
+
+    constructor( ) {
 
         this.line = [
             { id: 1, gate: new Adder8(), enable: new EnableGate(null), and: new AndGate() },
@@ -40,21 +47,41 @@ export class Alu {
             { id: 64, gate: new Comparator8(), enable: new EnableGate(null) }
         ];
 
-        this.nand = Array.from({ length: 3 }, () => new NandGate());
+        // this.nand = Array.from({ length: 3 }, () => new NandGate());
         this.decoder3x8 = new Decoder3x8();
         this.zero = new ZeroDetector8();
 
-        this.inputs = {
-            a: numberToByte(0),
-            b: numberToByte(0),
-            carry: 0,
-            decoderInputs: {
-                a: 0, b: 0, c: 0
-            }
-        }
+        // this.inputs = {
+        //     a: numberToByte(0),
+        //     b: numberToByte(0),
+        //     carry: 0,
+        //     decoderInputs: {
+        //         a: 0, b: 0, c: 0
+        //     }
+        // }
+
+        // this.acc = acc;
+        // this.bus = bus;
+        // this.bus1 = bus1;
     }
 
     setInputs(aluInput: IAluInputs) {
+        for (const line of this.line) {
+            if (line.gate instanceof Shl || line.gate instanceof Shr) {
+                line.gate.setInputs(aluInput.a, aluInput.carry);
+            } else if (line.gate instanceof Not8) {
+                line.gate.setInputs(aluInput.a);
+            } else if (line.gate instanceof Adder8) {
+                line.gate.setInputs(aluInput.a, aluInput.b, aluInput.carry);
+            } else {
+                line.gate.setInputs(aluInput.a, aluInput.b);
+            }
+        }
+        const { a, b, c } = aluInput.decoderInputs;
+        this.decoder3x8.setInputs(a, b, c);
+    }
+
+    setInputsTest(aluInput: IAluInputs) {
         for (const line of this.line) {
             if (line.gate instanceof Shl || line.gate instanceof Shr) {
                 line.gate.setInputs(aluInput.a, aluInput.carry);

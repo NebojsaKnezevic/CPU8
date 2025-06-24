@@ -1,11 +1,11 @@
-import type { Bit } from "../../interface/interfaces";
+import type { Bit, IBasic1 } from "../../interface/interfaces";
 
 //you can build entire CPU with NAND OR NOR
 
 
 
 // NAND Gate
-export class NandGate {
+export class NandGate implements IBasic1 {
   private inputs: Bit[] = [];
   private output: Bit = 0;
   private autoEvaluate: boolean;
@@ -57,6 +57,19 @@ export class AndGate {
   }
 }
 
+export class AndGateM {
+  private inputs: Bit[] = [];
+
+  setInputs(inputs: Bit[]): void {
+    this.inputs = inputs;
+  }
+
+  getOutput(): Bit {
+    return this.inputs.every(input => input === 1) ? 1 : 0;
+  }
+}
+
+
 // OR Gate
 export class OrGate {
   private inputA: Bit = 0;
@@ -71,6 +84,19 @@ export class OrGate {
     return this.inputA || this.inputB ? 1 : 0;
   }
 }
+
+export class OrGateM {
+  private inputs: Bit[] = [];
+
+  setInputs(inputs: Bit[]): void {
+    this.inputs = inputs;
+  }
+
+  getOutput(): Bit {
+    return this.inputs.some(input => input === 1) ? 1 : 0;
+  }
+}
+
 
 // NOR Gate
 export class NorGate {

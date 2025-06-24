@@ -24,7 +24,7 @@ describe("Alu", () => {
                 a: 0, b: 0, c: 0
             }
         }
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
 
         const aluOutput: IAluOutputs = alu.getOutput();
 
@@ -49,7 +49,7 @@ describe("Alu", () => {
             }
         }
 
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
         
         const expectedOutput: IAluOutputs = {
@@ -74,7 +74,7 @@ describe("Alu", () => {
                 a: 0, b: 0, c: 0
             }
         }
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
         
         const expectedOutput: IAluOutputs = {
@@ -97,7 +97,7 @@ describe("Alu", () => {
                 a: 0, b: 0, c: 0
             }
         }
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
         
         const expectedOutput: IAluOutputs = {
@@ -120,7 +120,7 @@ describe("Alu", () => {
                 a: 0, b: 0, c: 0
             }
         }
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
         
         const expectedOutput: IAluOutputs = {
@@ -143,7 +143,7 @@ describe("Alu", () => {
                 a: 0, b: 0, c: 1
             }
         }
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
         
         const expectedOutput: IAluOutputs = {
@@ -166,7 +166,7 @@ describe("Alu", () => {
                 a: 0, b: 0, c: 1
             }
         }
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
         
         const expectedOutput: IAluOutputs = {
@@ -189,7 +189,7 @@ describe("Alu", () => {
                 a: 0, b: 0, c: 1
             }
         }
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
         
         const expectedOutput: IAluOutputs = {
@@ -212,7 +212,7 @@ describe("Alu", () => {
                 a: 0, b: 0, c: 1
             }
         }
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
         
         const expectedOutput: IAluOutputs = {
@@ -235,7 +235,7 @@ describe("Alu", () => {
                 a: 0, b: 0, c: 1
             }
         }
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
         
         const expectedOutput: IAluOutputs = {
@@ -258,7 +258,7 @@ describe("Alu", () => {
                 a: 0, b: 1, c: 0
             }
         }
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
         
         const expectedOutput: IAluOutputs = {
@@ -281,7 +281,7 @@ describe("Alu", () => {
                 a: 0, b: 1, c: 0
             }
         }
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
         
         const expectedOutput: IAluOutputs = {
@@ -304,7 +304,7 @@ describe("Alu", () => {
                 a: 0, b: 1, c: 0
             }
         }
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
         
         const expectedOutput: IAluOutputs = {
@@ -327,7 +327,7 @@ describe("Alu", () => {
                 a: 0, b: 1, c: 0
             }
         }
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
         
         const expectedOutput: IAluOutputs = {
@@ -349,7 +349,7 @@ describe("Alu", () => {
                 a: 0, b: 1, c: 0
             }
         }
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
         
         const expectedOutput: IAluOutputs = {
@@ -372,7 +372,7 @@ describe("Alu", () => {
                 a: 0, b: 1, c: 1
             }
         }
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
         
         const expectedOutput: IAluOutputs = {
@@ -395,7 +395,7 @@ describe("Alu", () => {
                 a: 0, b: 1, c: 1
             }
         }
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
         
         const expectedOutput: IAluOutputs = {
@@ -418,7 +418,7 @@ describe("Alu", () => {
                 a: 0, b: 1, c: 1
             }
         }
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
         
         const expectedOutput: IAluOutputs = {
@@ -441,7 +441,7 @@ describe("Alu", () => {
                 a: 0, b: 1, c: 1
             }
         }
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
         
         const expectedOutput: IAluOutputs = {
@@ -464,7 +464,7 @@ describe("Alu", () => {
                 a: 0, b: 1, c: 1
             }
         }
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
         
         const expectedOutput: IAluOutputs = {
@@ -487,7 +487,7 @@ describe("Alu", () => {
                 a: 1, b: 0, c: 0
             }
         }
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
         
         const expectedOutput: IAluOutputs = {
@@ -510,7 +510,7 @@ describe("Alu", () => {
                 a: 1, b: 0, c: 0
             }
         }
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
         
         const expectedOutput: IAluOutputs = {
@@ -533,7 +533,7 @@ describe("Alu", () => {
                 a: 1, b: 0, c: 0
             }
         }
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
         
         const expectedOutput: IAluOutputs = {
@@ -556,7 +556,7 @@ describe("Alu", () => {
                 a: 1, b: 0, c: 0
             }
         }
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
         
         const expectedOutput: IAluOutputs = {
@@ -579,7 +579,7 @@ describe("Alu", () => {
                 a: 1, b: 0, c: 0
             }
         }
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
         
         const expectedOutput: IAluOutputs = {
@@ -600,7 +600,7 @@ describe("Alu", () => {
             carry: 0,
             decoderInputs: { a: 1, b: 0, c: 1 }
         };
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput = alu.getOutput();
     
         const expectedOutput: IAluOutputs = {
@@ -621,7 +621,7 @@ describe("Alu", () => {
             carry: 0,
             decoderInputs: { a: 1, b: 0, c: 1 }
         };
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput = alu.getOutput();
     
         const expectedOutput: IAluOutputs = {
@@ -642,7 +642,7 @@ describe("Alu", () => {
             carry: 0,
             decoderInputs: { a: 1, b: 0, c: 1 }
         };
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput = alu.getOutput();
     
         const expectedOutput: IAluOutputs = {
@@ -663,7 +663,7 @@ describe("Alu", () => {
             carry: 0,
             decoderInputs: { a: 1, b: 0, c: 1 }
         };
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput = alu.getOutput();
     
         const expectedOutput: IAluOutputs = {
@@ -684,7 +684,7 @@ describe("Alu", () => {
             carry: 0,
             decoderInputs: { a: 1, b: 0, c: 1 }
         };
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput = alu.getOutput();
     
         const expectedOutput: IAluOutputs = {
@@ -710,7 +710,7 @@ describe("Alu", () => {
             carry: 0,
             decoderInputs: { a: 1, b: 1, c: 0 }
         };
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput = alu.getOutput();
     
         const expectedOutput: IAluOutputs = {
@@ -731,7 +731,7 @@ describe("Alu", () => {
             carry: 0,
             decoderInputs: { a: 1, b: 1, c: 0 }
         };
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput = alu.getOutput();
     
         const expectedOutput: IAluOutputs = {
@@ -752,7 +752,7 @@ describe("Alu", () => {
             carry: 0,
             decoderInputs: { a: 1, b: 1, c: 0 }
         };
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput = alu.getOutput();
     
         const expectedOutput: IAluOutputs = {
@@ -773,7 +773,7 @@ describe("Alu", () => {
             carry: 0,
             decoderInputs: { a: 1, b: 1, c: 0 }
         };
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput = alu.getOutput();
     
         const expectedOutput: IAluOutputs = {
@@ -794,7 +794,7 @@ describe("Alu", () => {
             carry: 0,
             decoderInputs: { a: 1, b: 1, c: 0 }
         };
-        alu.setInputs(aluInput);
+        alu.setInputsTest(aluInput);
         const aluOutput = alu.getOutput();
     
         const expectedOutput: IAluOutputs = {
