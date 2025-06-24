@@ -1,4 +1,5 @@
-import type { Bit, Word } from "../../interface/interfaces";
+import { numberToByte } from "../../constants/byte-conversion";
+import type { Bit, Byte, Word } from "../../interface/interfaces";
 import { Bus } from "../bus/bus";
 import { Decoder4x16 } from "../logic/decoder4x16";
 import { RamCell } from "./ram-cell";
@@ -28,20 +29,61 @@ export class Ram {
     }
 
     setMarInputs(s: Bit) {
-        this.mar.setInputs(s);
+        if(s === 1){
+            this.mar.setInputs(s);
+        }
+       
+    }
+
+    getMarOutput(){
+        return [...this.mar.getData()] as Byte
     }
 
     setInputs(s: Bit, e: Bit) {
     
-        const ramCell = this.pickRamCell();
+        const ramCell = this.pickRamCell(this.mar.getData());
         // console.log(ramCell)
         ramCell.setInputs(1, 1, s, e, 0);
         // console.log(ramCell)
         return ramCell;
     }
 
-    private pickRamCell() {
-        let input = this.mar.getData();
+    setInRam(x: Bit) {
+    
+        const ramCell = this.pickRamCell(this.mar.getData());
+        // console.log(ramCell)
+        ramCell.setInputs(1, 1, x, 0, 0);
+        // console.log(ramCell)
+        return ramCell;
+    }
+
+    setOnBus(x: Bit) {
+    
+        const ramCell = this.pickRamCell(this.mar.getData());
+        // console.log(ramCell)
+        ramCell.setInputs(1, 1, 0, x, 0);
+        // console.log(ramCell)
+        return ramCell;
+    }
+
+    setDataManually(startAddress: number, data: Byte[]) {
+        if(startAddress > 255) throw new Error("Address excedes size of the ram! Avaiable addresses 0 - 255");
+    
+        if(startAddress + data.length - 1 > 255) throw new Error("Not enough address space/memory");
+
+        for (let i = 0; i < data.length; i++) {
+            this.pickRamCell(numberToByte(startAddress + i)).register.setInputsFromNonBus(data[i]);
+        }
+    }
+
+    getRamCellManually(startAddress: number){
+        if(startAddress > 255) throw new Error("Address excedes size of the ram! Avaiable addresses 0 - 255");
+        return this.pickRamCell(numberToByte(startAddress));
+
+    }
+
+    private pickRamCell(address: Byte) {
+        let input = address;
 
         this.columnDecoder.setInputs(input[4], input[5], input[6], input[7]);
         this.rowDecoder.setInputs( input[0], input[1], input[2], input[3]);

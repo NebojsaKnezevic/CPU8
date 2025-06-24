@@ -16,7 +16,7 @@ export class RamCell{
     private ands: AndGate[];
     private or: OrGate;
 
-    private register: Register;
+    public register: Register;
 
     constructor(bus: Bus){
         this.ands = Array.from({length:3}, () => new AndGate())

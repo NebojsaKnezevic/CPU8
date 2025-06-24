@@ -47,9 +47,9 @@ export class Comparator8 {
     
         const result: Byte = [
             0, 0, 0, 0, 0,
-            greater,  // bit 2
-            equal,    // bit 1
-            less,     // bit 0
+            greater,  // bit 4
+            equal,    // bit 2
+            less,     // bit 1
             
         ];
     

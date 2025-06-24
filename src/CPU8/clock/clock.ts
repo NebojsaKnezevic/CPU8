@@ -5,34 +5,31 @@ import { JKFF } from "../memory/jk-flipflop";
 
 
 
-
 export class Clock {
-    private clk: Bit = 0;     
-    private clks: Bit = 0;    
-    private clke: Bit = 0;   
-    
-        //in    0101 0101 
-        //clk   0110 0110
-        //clke  1110 1110
-        //clks  0100 0100
+    private clk: Bit = 0;
+    private clke: Bit = 1;
+    private clks: Bit = 0;
 
+    private out: [Bit, Bit, Bit][] = [
+        [0,1,0],
+        [1,1,1],
+        [1,1,0],
+        [0,0,0]
+    ]
 
-    setInputs() {
-        const next: Bit = this.clk === 0 ? 1 : 0;
+    private i: number = 0;
 
-        // edge detection
-        // this.clks = this.clk === 1 && next === 0 ? 1 : 0; // falling edge
-        // this.clke = this.clk === 0 && next === 1 ? 1 : 0; // rising edge
+    // in    0101 0101
+    // clk   0110 0110
+    // clke  1110 1110
+    // clks  0100 0100
 
-        this.clk = next;
-        this.clks = next;    
-        this.clke = next;  
-
+    setInputs(): void {
+        this.i = this.i + 1;
+        if(this.i === 4) this.i = 0;
     }
 
-    getOutput(){
-        return [
-            this.clk, this.clks, this.clke
-        ];
+    getOutput(): [Bit, Bit, Bit] {
+        return this.out[this.i];
     }
 }
