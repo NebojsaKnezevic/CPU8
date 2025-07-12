@@ -32,6 +32,10 @@ describe("ALU INSTRUCTIONS", () => {
         [1, 1, 1, 0, 0, 0, 1, 1],
         [1, 1, 1, 0, 0, 0, 1, 1],
         [1, 1, 1, 0, 0, 0, 1, 1],
+
+        [1, 1, 1, 1, 0, 0, 1, 1],
+        [1, 1, 1, 1, 0, 1, 1, 0],
+        [1, 1, 1, 1, 1, 0, 0, 1],
     ]);
     it("Should add reg A and B: #1 ADD, OP CODE: 000", () => {
 
@@ -240,6 +244,7 @@ describe("ALU INSTRUCTIONS", () => {
         // expect(byteToNumber(computer.acc.getData()) ).equal(1 )
 
         expect(byteToNumber(computer.registers[3].getData())).equal(4)
+
     })
 
     it("CMP A & B: #7 CMP, OP CODE: 110", () => {
@@ -266,6 +271,45 @@ describe("ALU INSTRUCTIONS", () => {
         // expect(byteToNumber(computer.acc.getData()) ).equal(1 )
 
         expect(byteToNumber(computer.registers[3].getData())).equal(1)
+    })
+
+    it("CMP WITH NO RESULTS in RegB: #8 CMP, OP CODE: 111", () => {
+
+        computer.registers[0].setInputsFromNonBus(numberToByte(2))
+        computer.registers[3].setInputsFromNonBus(numberToByte(22)) //REG B will keep this value
+
+
+        computer.run(1);
+
+        // expect(byteToNumber(computer.acc.getData()) ).equal(1 )
+
+        expect(byteToNumber(computer.registers[3].getData())).equal(22)
+    })
+
+    it("CMP WITH NO RESULTS in RegB: #8 CMP, OP CODE: 111", () => {
+
+        computer.registers[1].setInputsFromNonBus(numberToByte(2))
+        computer.registers[2].setInputsFromNonBus(numberToByte(122)) //REG B will keep this value
+
+
+        computer.run(1);
+
+        // expect(byteToNumber(computer.acc.getData()) ).equal(1 )
+
+        expect(byteToNumber(computer.registers[2].getData())).equal(122)
+    })
+
+    it("CMP WITH NO RESULTS in RegB: #8 CMP, OP CODE: 111", () => {
+
+        computer.registers[2].setInputsFromNonBus(numberToByte(2))
+        computer.registers[1].setInputsFromNonBus(numberToByte(212)) //REG B will keep this value
+
+
+        computer.run(1);
+
+        // expect(byteToNumber(computer.acc.getData()) ).equal(1 )
+
+        expect(byteToNumber(computer.registers[1].getData())).equal(212)
     })
 
     

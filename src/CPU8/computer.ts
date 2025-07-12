@@ -65,7 +65,7 @@ export class Computer {
                 this.runCycle(24);
             }
             
-            console.log("RUN ", this.pc, val,this.programStartAddress, this.programEndAddress)
+            // console.log("RUN ", this.pc, val,this.programStartAddress, this.programEndAddress)
             this.pc++;
         }
         
