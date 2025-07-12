@@ -1,4 +1,4 @@
-import type { Bit, IBasic1 } from "../../interface/interfaces";
+import type { Bit, IBasic1, IBasic1M } from "../../interface/interfaces";
 
 //you can build entire CPU with NAND OR NOR
 
@@ -30,7 +30,7 @@ export class NandGate implements IBasic1 {
 
 
 // NOT Gate
-export class NotGate {
+export class NotGate implements IBasic1  {
   private input: Bit = 0;
 
   setInputs(a: Bit): void {
@@ -43,7 +43,7 @@ export class NotGate {
 }
 
 // AND Gate
-export class AndGate {
+export class AndGate implements IBasic1  {
   private inputA: Bit = 0;
   private inputB: Bit = 0;
 
@@ -57,7 +57,7 @@ export class AndGate {
   }
 }
 
-export class AndGateM {
+export class AndGateM implements IBasic1M  {
   private inputs: Bit[] = [];
 
   setInputs(inputs: Bit[]): void {
@@ -71,7 +71,7 @@ export class AndGateM {
 
 
 // OR Gate
-export class OrGate {
+export class OrGate implements IBasic1  {
   private inputA: Bit = 0;
   private inputB: Bit = 0;
 
@@ -85,7 +85,7 @@ export class OrGate {
   }
 }
 
-export class OrGateM {
+export class OrGateM implements IBasic1M  {
   private inputs: Bit[] = [];
 
   setInputs(inputs: Bit[]): void {
@@ -99,7 +99,7 @@ export class OrGateM {
 
 
 // NOR Gate
-export class NorGate {
+export class NorGate implements IBasic1  {
   private inputA: Bit = 0;
   private inputB: Bit = 0;
 
@@ -114,7 +114,7 @@ export class NorGate {
 }
 
 // XOR Gate
-export class XorGate {
+export class XorGate implements IBasic1  {
   private inputA: Bit = 0;
   private inputB: Bit = 0;
 
@@ -129,7 +129,7 @@ export class XorGate {
 }
 
 // XNOR Gate
-export class XnorGate {
+export class XnorGate implements IBasic1  {
   private inputA: Bit = 0;
   private inputB: Bit = 0;
 
