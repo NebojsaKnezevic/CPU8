@@ -722,6 +722,8 @@ describe("Alu", () => {
         };
     
         expect(aluOutput).toEqual(expectedOutput);
+        expect(aluOutput.aLarger).toBe(1);
+        expect(aluOutput.equal).toBe(0);
     });
     
     it("2 OPCODE: 1, 1, 0 == Comparator8 ", () => {
@@ -743,6 +745,8 @@ describe("Alu", () => {
         };
     
         expect(aluOutput).toEqual(expectedOutput);
+        expect(aluOutput.aLarger).toBe(0);
+        expect(aluOutput.equal).toBe(0);
     });
     
     it("3 OPCODE: 1, 1, 0 == Comparator8 ", () => {
@@ -764,6 +768,8 @@ describe("Alu", () => {
         };
     
         expect(aluOutput).toEqual(expectedOutput);
+        expect(aluOutput.aLarger).toBe(0);
+        expect(aluOutput.equal).toBe(1);
     });
     
     it("4 OPCODE: 1, 1, 0 == Comparator8 ", () => {
@@ -785,6 +791,8 @@ describe("Alu", () => {
         };
     
         expect(aluOutput).toEqual(expectedOutput);
+        expect(aluOutput.aLarger).toBe(0);
+        expect(aluOutput.equal).toBe(0);
     });
     
     it("5 OPCODE: 1, 1, 0 == Comparator8 ", () => {
@@ -806,6 +814,8 @@ describe("Alu", () => {
         };
     
         expect(aluOutput).toEqual(expectedOutput);
+        expect(aluOutput.aLarger).toBe(1);
+        expect(aluOutput.equal).toBe(0);
     });
     
     

@@ -1,4 +1,4 @@
-import {  numberToByte } from "../../constants/byte-conversion";
+
 import { WORD_WIDTH } from "../../constants/config";
 import type { Bit, Byte } from "../../interface/interfaces";
 import { Comparator } from "./comparator";

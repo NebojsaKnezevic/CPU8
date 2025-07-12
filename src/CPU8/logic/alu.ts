@@ -1,9 +1,9 @@
 import { byteToNumber, numberToByte } from "../../constants/byte-conversion";
 import type { Bit, Byte, IAluInputs, IAluOutputs } from "../../interface/interfaces";
-import  { Bus } from "../bus/bus";
-import  { Bus1 } from "../bus/bus1";
+import { Bus } from "../bus/bus";
+import { Bus1 } from "../bus/bus1";
 import { EnableGate } from "../memory/enable-gate";
-import  { Register } from "../memory/register";
+import { Register } from "../memory/register";
 import { Adder8 } from "./adder8";
 import { And8 } from "./and8";
 import { Comparator8 } from "./comparator8";
@@ -35,7 +35,16 @@ export class Alu {
     // private bus: Bus;
     // private bus1: Bus1;
 
-    constructor( ) {
+    public aluInput: IAluInputs = {
+        a: [0, 0, 0, 0, 0, 0, 0, 0],
+        b: [0, 0, 0, 0, 0, 0, 0, 0],
+        carry: 0,
+        decoderInputs: {
+            a: 0, b: 0, c: 0
+        }
+    };
+
+    constructor() {
 
         this.line = [
             { id: 1, gate: new Adder8(), enable: new EnableGate(null), and: new AndGate() },
@@ -44,7 +53,8 @@ export class Alu {
             { id: 8, gate: new Not8(), enable: new EnableGate(null) },
             { id: 16, gate: new And8(), enable: new EnableGate(null) },
             { id: 32, gate: new Or8(), enable: new EnableGate(null) },
-            { id: 64, gate: new Comparator8(), enable: new EnableGate(null) }
+            { id: 64, gate: new Comparator8(), enable: new EnableGate(null) },
+            { id: 128, gate: new Comparator8(), enable: new EnableGate(null) }
         ];
 
         // this.nand = Array.from({ length: 3 }, () => new NandGate());
@@ -65,7 +75,12 @@ export class Alu {
         // this.bus1 = bus1;
     }
 
-    setInputs(aluInput: IAluInputs) {
+    setInputs(input: IAluInputs) {
+
+        this.aluInput = input;
+
+        const aluInput = this.aluInput;
+        //just setting inputs into all parts of the ALI
         for (const line of this.line) {
             if (line.gate instanceof Shl || line.gate instanceof Shr) {
                 line.gate.setInputs(aluInput.a, aluInput.carry);
@@ -81,7 +96,11 @@ export class Alu {
         this.decoder3x8.setInputs(a, b, c);
     }
 
-    setInputsTest(aluInput: IAluInputs) {
+    setInputsTest(input: IAluInputs) {
+        this.aluInput = input;
+
+        const aluInput = this.aluInput;
+
         for (const line of this.line) {
             if (line.gate instanceof Shl || line.gate instanceof Shr) {
                 line.gate.setInputs(aluInput.a, aluInput.carry);
@@ -139,14 +158,14 @@ export class Alu {
             // Zero flag
             this.zero.setInput(output.out);
             output.zero = this.zero.getOutput();
-            
+
             const comparator = this.line.find(l => l.id === 64)
             // console.log(comparator?.gate.getOutput()[2])
             // a larger flag
             output.aLarger = comparator?.gate.getOutput()[0] as Bit;
 
             // equal flag
-            output.equal = comparator?.gate.getOutput()[1]  as Bit;
+            output.equal = comparator?.gate.getOutput()[1] as Bit;
         }
 
         return output;

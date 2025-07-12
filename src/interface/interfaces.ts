@@ -28,8 +28,20 @@ export interface IBasic1 {
     getOutput(): Bit;
 }
 
+export interface IBasic1M {
+    setInputs(a: Bit[]): void;
+    getOutput(): Bit;
+}
+
 export interface IBasic8 {
     setInputs(a: Byte, b?: Byte): void;
     getOutput(): Byte;
 }
+
+export interface IAdder1{
+    setInputs(a: Bit, b: Bit, c: Bit): void;
+    getOutput(): [Bit, Bit];
+}
+
+
 
