@@ -36,4 +36,5 @@ export class EnableGate {
             throw new Error("Check EnableGate getData()");
         }
     }
+
 }
