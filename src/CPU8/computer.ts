@@ -1,4 +1,4 @@
-import { byteToNumber } from "../constants/byte-conversion";
+import { byteToNumber, numberToByte } from "../constants/byte-conversion";
 import type { Byte } from "../interface/interfaces";
 import { Bus } from "./bus/bus";
 import { Bus1 } from "./bus/bus1";
@@ -46,13 +46,14 @@ export class Computer {
         this.ram.setDataManually(startAddress, program);
 
         this.programStartAddress = startAddress;
-        this.pc = startAddress + 1;
-        this.programEndAddress = this.programStartAddress + program.length - 1;
+        this.iar.setInputsFromNonBus(numberToByte(startAddress));
+        this.pc = startAddress ;
+        this.programEndAddress = this.programStartAddress + program.length ;
 
     }
 
     public run(userInputCycleNum?: number) {
-        const val = userInputCycleNum ? this.pc + userInputCycleNum : this.programEndAddress + 1 ;
+        const val = userInputCycleNum ? this.pc + userInputCycleNum : this.programEndAddress  ;
         //first cycle is always 23 the rest are 24
         if(this.pc > this.programEndAddress + 1) throw new Error("Stack overflow! The real thing xD");
         if(userInputCycleNum !== undefined && userInputCycleNum > this.programEndAddress + 1) throw new Error("Stack overflow! The real thing xD");
@@ -64,12 +65,10 @@ export class Computer {
             } else {
                 this.runCycle(24);
             }
-            
-            // console.log("RUN ", this.pc, val,this.programStartAddress, this.programEndAddress)
             this.pc++;
         }
         
-        // console.log(this.acc.getData())
+ 
 
     }
 

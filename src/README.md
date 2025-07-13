@@ -79,3 +79,6 @@ To build a fully working 8-bit CPU, the following components are required:
 
 
 
+
+
+

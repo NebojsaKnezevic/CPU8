@@ -17,7 +17,7 @@ describe("Decoder2x4", () => {
             // Here 1 should move from MSB to LSB
             const expected = Array(4).fill(0) as Nibble;
             expected[i] = 1;
-            console.log(output,expected)
+            // console.log(output,expected)
             expect(output).toEqual(expected);
         }
     });
