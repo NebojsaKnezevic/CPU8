@@ -1,4 +1,4 @@
-import { numberToByte } from "../../constants/byte-conversion";
+import { byteToNumber, numberToByte } from "../../constants/byte-conversion";
 import type { Bit, Byte, Word } from "../../interface/interfaces";
 import { Bus } from "../bus/bus";
 import { Decoder4x16 } from "../logic/decoder4x16";
@@ -69,8 +69,8 @@ export class Ram {
     setDataManually(startAddress: number, data: Byte[]) {
         if(startAddress > 255) throw new Error("Address excedes size of the ram! Avaiable addresses 0 - 255");
     
-        if(startAddress + data.length - 1 > 255) throw new Error("Not enough address space/memory");
-
+        if(startAddress + data.length > 255) throw new Error("Not enough address space/memory");
+        
         for (let i = 0; i < data.length; i++) {
             this.pickRamCell(numberToByte(startAddress + i)).register.setInputsFromNonBus(data[i]);
         }
@@ -98,6 +98,28 @@ export class Ram {
         return this.dataGrid[y][x];
     }
 
+    public ramList(){
+        this.dataGrid.map(row => {
+            row.map(item => console.log(byteToNumber(item.register.getData())))
+        })
+    }
+
+    // private pickRamCellTest(address: Byte) {
+    //     let input = address;
+
+    //     this.columnDecoder.setInputs(input[4], input[5], input[6], input[7]);
+    //     this.rowDecoder.setInputs( input[0], input[1], input[2], input[3]);
+
+    //     let column = this.columnDecoder.getOutput();
+    //     let row = this.rowDecoder.getOutput();
+
+    //     let x = this.rowColumn(column.reverse() as Word)
+    //     let y = this.rowColumn(row)
+    //     console.log(row, column)
+    //     // console.log(y,x)
+    //     return this.dataGrid[y][x];
+    // }
+
     private rowColumn(x: Word): number {
         let res = 0;
         for (let i = 0; i < x.length; i++) {
@@ -106,4 +128,6 @@ export class Ram {
         }
         return res;
     }
+
+   
 }

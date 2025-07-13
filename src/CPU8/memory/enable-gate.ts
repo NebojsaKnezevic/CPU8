@@ -33,7 +33,8 @@ export class EnableGate {
         if (e) {
             return inputs as Byte
         } else {
-            throw new Error("Check EnableGate getData()");
+            // throw new Error("Check EnableGate getData()");
+            return [0,0,0,0,0,0,0,0]
         }
     }
 
