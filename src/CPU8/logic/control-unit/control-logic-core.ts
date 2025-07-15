@@ -17,6 +17,7 @@ export class ControlLogicCore {
     public rB_OrmgatE: OrGateM;
     public rB_OrmgatS: OrGateM;
     public ram_OrmGateS: OrGateM;
+    
 
     // AND gates
     public iar_andGateE: AndGate;
@@ -33,6 +34,9 @@ export class ControlLogicCore {
     public inner_decoder3x8_and1: AndGate;
     public inner_decoder3x8_and2: AndGate;
     public inner_decoder3x8_and3: AndGate;
+    public data_instruction_and0: AndGate;
+    public data_instruction_and1: AndGate;
+    public data_instruction_and2: AndGate;
 
     //OR gates
     public inner_decoder3x8_or: OrGate;
@@ -84,6 +88,7 @@ export class ControlLogicCore {
         this.rB_OrmgatE = new OrGateM();
         this.rB_OrmgatS = new OrGateM();
 
+
         // AND gates
         this.iar_andGateE = new AndGate();
         this.iar_andGateS = new AndGate();
@@ -99,6 +104,10 @@ export class ControlLogicCore {
         this.inner_decoder3x8_and1 = new AndGate();
         this.inner_decoder3x8_and2 = new AndGate();
         this.inner_decoder3x8_and3 = new AndGate();
+        this.data_instruction_and0 = new AndGate();
+        this.data_instruction_and1 = new AndGate();
+        this.data_instruction_and2 = new AndGate();
+        
     
         //OR gates
         this.inner_decoder3x8_or = new OrGate();
