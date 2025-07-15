@@ -107,28 +107,45 @@ export class ControlUnit {
             this.inner_decoder3x8_not.getOutput()
         );
         const { s4out, s5outA, s5outB } = this.loadStoreInstruction(decoderOutput, s4, s5);
+        const { datas4, datas5, datas6 } = this.dataInstruction(decoderOutput, s4, s5, s6);
         // if(b0 === 0){console.log(decoderOutput)}
 
         //####### ENABLE
         this.enableRegisters([b4, b5, b6, b7], clke, [out5, s4out], [out4, s5outB]);
-        this.enableBus1([s1]);
-        this.enableIAR([s1], clke);
-        this.enableRAM([s2, s5outA], clke);
-        this.enableACC([s3, out6], clke);
+        this.enableBus1([s1, datas4]);
+        this.enableIAR([s1, datas4], clke);
+        this.enableRAM([s2, s5outA, datas5], clke);
+        this.enableACC([s3, out6, datas6], clke);
 
         //####### SET
-        this.setRegisters([b6, b7], clks, [out6, s5outA]);
-        this.setMAR([s1, s4out], clks);
-        this.setACC([s1, out5], clks);
+        this.setRegisters([b6, b7], clks, [out6, s5outA, datas5]);
+        this.setMAR([s1, s4out, datas4], clks);
+        this.setACC([s1, out5, datas4], clks);
         this.setIR([s2], clks);
-        this.setIAR([s3], clks);
+        this.setIAR([s3, datas6], clks);
         this.tmpS(out4, clks);
         this.setRAM([s5outB], clks);
     }
 
-    public debugDetails(){
-        const [s1, s2, s3, s4, s5, s6] = this.stepper.getOutput();
-        console.log([s1, s2, s3, s4, s5, s6])
+    private dataInstruction(decoderOutput: Byte, s4: Bit, s5: Bit, s6: Bit): { datas4: Bit, datas5: Bit, datas6: Bit } {
+
+        const output: { datas4: Bit, datas5: Bit, datas6: Bit } = { datas4: 0, datas5: 0, datas6: 0 };
+
+        const [b0, b1, b2, b3, b4, b5, b6, b7] = decoderOutput;
+
+        //s4
+        this.controlLogicCore.data_instruction_and0.setInputs(s4, b2);
+        output.datas4 = this.controlLogicCore.data_instruction_and0.getOutput();
+
+        //s5
+        this.controlLogicCore.data_instruction_and1.setInputs(s5, b2);
+        output.datas5 = this.controlLogicCore.data_instruction_and1.getOutput();
+
+        //s6
+        this.controlLogicCore.data_instruction_and2.setInputs(s6, b2);
+        output.datas6 = this.controlLogicCore.data_instruction_and2.getOutput();
+
+        return output;
     }
 
     private loadStoreInstruction(decoderOutput: Byte, s4: Bit, s5: Bit): { s4out: Bit, s5outA: Bit, s5outB: Bit } {
