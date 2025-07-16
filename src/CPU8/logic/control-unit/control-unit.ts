@@ -108,10 +108,11 @@ export class ControlUnit {
         );
         const { s4out, s5outA, s5outB } = this.loadStoreInstruction(decoderOutput, s4, s5);
         const { datas4, datas5, datas6 } = this.dataInstruction(decoderOutput, s4, s5, s6);
+        const jri = this.jumpRegisterInstruction(decoderOutput, s4);
         // if(b0 === 0){console.log(decoderOutput)}
 
         //####### ENABLE
-        this.enableRegisters([b4, b5, b6, b7], clke, [out5, s4out], [out4, s5outB]);
+        this.enableRegisters([b4, b5, b6, b7], clke, [out5, s4out], [out4, s5outB, jri]);
         this.enableBus1([s1, datas4]);
         this.enableIAR([s1, datas4], clke);
         this.enableRAM([s2, s5outA, datas5], clke);
@@ -122,9 +123,15 @@ export class ControlUnit {
         this.setMAR([s1, s4out, datas4], clks);
         this.setACC([s1, out5, datas4], clks);
         this.setIR([s2], clks);
-        this.setIAR([s3, datas6], clks);
+        this.setIAR([s3, datas6, jri], clks);
         this.tmpS(out4, clks);
         this.setRAM([s5outB], clks);
+    }
+
+    private jumpRegisterInstruction(decoderOutput: Byte, s4: Bit): Bit{
+        const [b0, b1, b2, b3, b4, b5, b6, b7] = decoderOutput;
+        this.controlLogicCore.jump_register_and.setInputs(b4, s4);
+        return this.controlLogicCore.jump_register_and.getOutput();
     }
 
     private dataInstruction(decoderOutput: Byte, s4: Bit, s5: Bit, s6: Bit): { datas4: Bit, datas5: Bit, datas6: Bit } {
@@ -338,108 +345,6 @@ export class ControlUnit {
 
 
 
-
-    // private 
-
-
-    // private fetchPhase(stepperOutput: [Bit, Bit, Bit, Bit, Bit, Bit], irOutput: Byte, clockInput: [Bit, Bit, Bit]) {
-    //     const [clk, clke, clks] = clockInput;
-    //     const [b0, b1, b2, b3, b4, b5, b6, b7] = irOutput;
-
-
-    //     const [s1, s2, s3, s4, s5, s6] = stepperOutput;
-
-    //     // console.log("IR",[b0, b1, b2, b3, b4, b5, b6, b7])
-
-    //     const clc: ControlLogicCore = this.controlLogicCore;
-
-    //     // const bus1_OrmE = this.getOrmGate('bus1_OrmE');
-    //     // const iar_OrmE = this.getOrmGate('iar_OrmE');
-    //     // const iar_OrmS = this.getOrmGate('iar_OrmS');
-    //     // const mar_OrmGate = this.getOrmGate('mar_OrmGate');
-    //     // const acc_OrmGateE = this.getOrmGate('acc_OrmGateE');
-    //     // const acc_OrmGateS = this.getOrmGate('acc_OrmGateS');
-    //     // const ram_OrmGate = this.getOrmGate('ram_OrmGate');
-    //     // const ir_OrmGate = this.getOrmGate('ir_OrmGate');
-    //     // const ra_OrmgatE = this.getOrmGate('ra_OrmgatE');
-    //     // const ra_OrmgatS = this.getOrmGate('ra_OrmgatS');
-
-    //     // const x = this.orm.get('ir_OrmGate');
-    //     // console.log('xxxxx', x)
-    //     // x?.setInputs
-
-    //     // const iar_andGateE = this.getAndGate('iar_andgateE');
-    //     // const iar_andGateS = this.getAndGate('iar_andgateS');
-    //     // const mar_andGate = this.getAndGate('mar_andgate');
-    //     // const acc_andGateE = this.getAndGate('acc_andgateE');
-    //     // const acc_andGateS = this.getAndGate('acc_andgateS');
-    //     // const ram_andGate = this.getAndGate('ram_andgate');
-    //     // const ir_andGate = this.getAndGate('ir_andgate');
-
-
-    //     //SELECT REGISTERS
-
-    //     //STEP 1
-
-
-    //     clc.bus1_OrmE.setInputs([s1])
-    //     this.bus1.setInputs(clc.bus1_OrmE.getOutput());
-
-    //     clc.iar_OrmE.setInputs([s1]);
-    //     clc.iar_andGateE.setInputs(clke, clc.iar_OrmE.getOutput())
-    //     this.iar.getDataOnBus(clc.iar_andGateE.getOutput());
-
-
-    //     clc.mar_OrmGate.setInputs([s1]);
-    //     clc.mar_andGate.setInputs(clc.mar_OrmGate.getOutput(), clks);
-    //     this.ram.setMarInputs(clc.mar_andGate.getOutput());
-
-    //     clc.acc_OrmGateS.setInputs([s1])
-    //     clc.acc_andGateS.setInputs(clc.acc_OrmGateS.getOutput(), clks);
-    //     this.acc.setInputsFromAlu(clc.acc_andGateS.getOutput());
-    //     // console.log([s1, s2, s3, s4, s5, s6])
-    //     // console.log([clk, clke, clks])
-
-
-
-
-
-    //     //STEP 2
-
-    //     clc.ram_OrmGate.setInputs([s2]);
-    //     clc.ram_andGate.setInputs(clc.ram_OrmGate.getOutput(), clke);
-    //     this.ram.setOnBus(clc.ram_andGate.getOutput()); //Manually set write flag to 0
-
-    //     clc.ir_OrmGate.setInputs([s2])
-    //     clc.ir_andGate.setInputs(clc.ir_OrmGate.getOutput(), clks);
-    //     this.ir.setInputs(clc.ir_andGate.getOutput());
-    //     // console.log('2', this.ram.getMarOutput())
-
-
-
-
-
-    //     //STEP 3
-
-    //     clc.acc_OrmGateE.setInputs([s3])
-    //     clc.acc_andGateE.setInputs(clc.acc_OrmGateE.getOutput(), clke);
-    //     this.acc.getDataOnBus(clc.acc_andGateE.getOutput());
-
-    //     clc.iar_OrmS.setInputs([s3]);
-    //     clc.iar_andGateS.setInputs(clks, clc.iar_OrmS.getOutput())
-    //     this.iar.setInputs(clc.iar_andGateS.getOutput());
-
-    //     // if(s4 === 1){
-    //     //     console.log('4', this.ram.getMarOutput())
-    //     // }
-    //     // if(s5 === 1){
-    //     //     console.log('5', this.ram.getMarOutput())
-    //     // }
-    //     // if(s6 === 1){
-    //     //     console.log('6', this.ram.getMarOutput())
-    //     // }
-
-    // }
 
     getOutput() {
         return this;
