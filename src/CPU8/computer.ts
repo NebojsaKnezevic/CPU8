@@ -62,13 +62,15 @@ export class Computer {
             if (this.isFirstRun) {
                 this.runCycle(23);
                 this.isFirstRun = false;
+                // console.log(this.iar.getData());
             } else {
                 this.runCycle(24);
+                // console.log(this.iar.getData());
             }
             this.pc++;
         }
         
- 
+        
 
     }
 

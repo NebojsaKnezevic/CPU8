@@ -1,5 +1,4 @@
 import { AndGate, AndGateM, NotGate, OrGate, OrGateM } from "../logic-gates";
-import { Not8 } from "../not8";
 
 
 
@@ -38,6 +37,8 @@ export class ControlLogicCore {
     public data_instruction_and1: AndGate;
     public data_instruction_and2: AndGate;
     public jump_register_and:     AndGate;
+    public jump_address_and1: AndGate;
+    public jump_address_and2: AndGate;
 
     //OR gates
     public inner_decoder3x8_or: OrGate;
@@ -109,6 +110,8 @@ export class ControlLogicCore {
         this.data_instruction_and1 = new AndGate();
         this.data_instruction_and2 = new AndGate();
         this.jump_register_and = new AndGate();
+        this.jump_address_and1 = new AndGate();
+        this.jump_address_and2 = new AndGate();
         
     
         //OR gates
