@@ -95,69 +95,85 @@ export class ControlUnit {
         //####### OP CODE
         this.opCodeHandle(b0, [b1, b2, b3], s5);
 
-        //####### ALU INSTRUCTION
-        const { out4, out5, out6 } = this.aluInstruction([b0, b1, b2, b3], s4, s5, s6);
-
-        //###### 
-
+        //####### INSTRUCTIONs
+        const { ais4, ais5, ais6 } = this.aluInstruction([b0, b1, b2, b3], s4, s5, s6);
         this.inner_decoder3x8.setInputs(b1, b2, b3);
         this.inner_decoder3x8_not.setInputs(b0);
         const decoderOutput: Byte = this.inner_decoder3x8_enable.getData(
             this.inner_decoder3x8.getOutput(),
             this.inner_decoder3x8_not.getOutput()
         );
-        const { s4out, s5outA, s5outB } = this.loadStoreInstruction(decoderOutput, s4, s5);
-        const { datas4, datas5, datas6 } = this.dataInstruction(decoderOutput, s4, s5, s6);
+        const { lsis4, lsis5a, lsis5b } = this.loadStoreInstruction(decoderOutput, s4, s5);
+        const { dis4, dis5, dis6 } = this.dataInstruction(decoderOutput, s4, s5, s6);
         const jri = this.jumpRegisterInstruction(decoderOutput, s4);
-        // if(b0 === 0){console.log(decoderOutput)}
+        const { jais4, jais5 } = this.jumpAddressInstruction(decoderOutput, s4, s5);
+       
 
         //####### ENABLE
-        this.enableRegisters([b4, b5, b6, b7], clke, [out5, s4out], [out4, s5outB, jri]);
-        this.enableBus1([s1, datas4]);
-        this.enableIAR([s1, datas4], clke);
-        this.enableRAM([s2, s5outA, datas5], clke);
-        this.enableACC([s3, out6, datas6], clke);
+        this.enableRegisters([b4, b5, b6, b7], clke, [ais5, lsis4], [ais4, lsis5b, jri]);
+        this.enableBus1([s1, dis4]);
+        this.enableIAR([s1, dis4, jais4], clke);
+        this.enableRAM([s2, lsis5a, dis5, jais5], clke);
+        this.enableACC([s3, ais6, dis6], clke);
 
         //####### SET
-        this.setRegisters([b6, b7], clks, [out6, s5outA, datas5]);
-        this.setMAR([s1, s4out, datas4], clks);
-        this.setACC([s1, out5, datas4], clks);
+        this.setRegisters([b6, b7], clks, [ais6, lsis5a, dis5]);
+        this.setMAR([s1, lsis4, dis4, jais4], clks);
+        this.setACC([s1, ais5, dis4], clks);
         this.setIR([s2], clks);
-        this.setIAR([s3, datas6, jri], clks);
-        this.tmpS(out4, clks);
-        this.setRAM([s5outB], clks);
+        this.setIAR([s3, dis6, jri, jais5], clks);
+        this.setTMP(ais4, clks);
+        this.setRAM([lsis5b], clks);
     }
 
-    private jumpRegisterInstruction(decoderOutput: Byte, s4: Bit): Bit{
+    private jumpAddressInstruction(decoderOutput: Byte, s4: Bit, s5: Bit): { jais4: Bit, jais5: Bit } {
+        const output: { jais4: Bit, jais5: Bit } = { jais4: 0, jais5: 0 }
+
         const [b0, b1, b2, b3, b4, b5, b6, b7] = decoderOutput;
-        this.controlLogicCore.jump_register_and.setInputs(b4, s4);
+
+        this.controlLogicCore.jump_address_and1.setInputs(b4, s4);
+        this.controlLogicCore.jump_address_and2.setInputs(b4, s5);
+
+        output.jais4 = this.controlLogicCore.jump_address_and1.getOutput();
+        output.jais5 = this.controlLogicCore.jump_address_and2.getOutput();
+
+        // console.log(output)
+        // console.log([b0, b1, b2, b3, b4, b5, b6, b7])
+
+        return output;
+
+    }
+
+    private jumpRegisterInstruction(decoderOutput: Byte, s4: Bit): Bit {
+        const [b0, b1, b2, b3, b4, b5, b6, b7] = decoderOutput;
+        this.controlLogicCore.jump_register_and.setInputs(b3, s4);
         return this.controlLogicCore.jump_register_and.getOutput();
     }
 
-    private dataInstruction(decoderOutput: Byte, s4: Bit, s5: Bit, s6: Bit): { datas4: Bit, datas5: Bit, datas6: Bit } {
+    private dataInstruction(decoderOutput: Byte, s4: Bit, s5: Bit, s6: Bit): { dis4: Bit, dis5: Bit, dis6: Bit } {
 
-        const output: { datas4: Bit, datas5: Bit, datas6: Bit } = { datas4: 0, datas5: 0, datas6: 0 };
+        const output: { dis4: Bit, dis5: Bit, dis6: Bit } = { dis4: 0, dis5: 0, dis6: 0 };
 
         const [b0, b1, b2, b3, b4, b5, b6, b7] = decoderOutput;
 
         //s4
         this.controlLogicCore.data_instruction_and0.setInputs(s4, b2);
-        output.datas4 = this.controlLogicCore.data_instruction_and0.getOutput();
+        output.dis4 = this.controlLogicCore.data_instruction_and0.getOutput();
 
         //s5
         this.controlLogicCore.data_instruction_and1.setInputs(s5, b2);
-        output.datas5 = this.controlLogicCore.data_instruction_and1.getOutput();
+        output.dis5 = this.controlLogicCore.data_instruction_and1.getOutput();
 
         //s6
         this.controlLogicCore.data_instruction_and2.setInputs(s6, b2);
-        output.datas6 = this.controlLogicCore.data_instruction_and2.getOutput();
+        output.dis6 = this.controlLogicCore.data_instruction_and2.getOutput();
 
         return output;
     }
 
-    private loadStoreInstruction(decoderOutput: Byte, s4: Bit, s5: Bit): { s4out: Bit, s5outA: Bit, s5outB: Bit } {
+    private loadStoreInstruction(decoderOutput: Byte, s4: Bit, s5: Bit): { lsis4: Bit, lsis5a: Bit, lsis5b: Bit } {
 
-        const out: { s4out: Bit, s5outA: Bit, s5outB: Bit } = { s4out: 0, s5outA: 0, s5outB: 0 }
+        const out: { lsis4: Bit, lsis5a: Bit, lsis5b: Bit } = { lsis4: 0, lsis5a: 0, lsis5b: 0 }
 
         const [b0, b1, b2, b3, b4, b5, b6, b7] = decoderOutput;
 
@@ -169,7 +185,7 @@ export class ControlUnit {
         const storeAndOut_s4 = this.controlLogicCore.inner_decoder3x8_and1.getOutput();
         this.controlLogicCore.inner_decoder3x8_or.setInputs(loadAndOut_s4, storeAndOut_s4);
 
-        out.s4out = this.controlLogicCore.inner_decoder3x8_or.getOutput();
+        out.lsis4 = this.controlLogicCore.inner_decoder3x8_or.getOutput();
 
         //s5 
         this.controlLogicCore.inner_decoder3x8_and2.setInputs(s5, b0); //load
@@ -177,13 +193,16 @@ export class ControlUnit {
         this.controlLogicCore.inner_decoder3x8_and3.setInputs(s5, b1); //store
         const storeAndOut_s5 = this.controlLogicCore.inner_decoder3x8_and3.getOutput();
 
-        out.s5outA = loadAndOut_s5; //load
-        out.s5outB = storeAndOut_s5; //store
+        out.lsis5a = loadAndOut_s5; //load
+        out.lsis5b = storeAndOut_s5; //store
         // console.log(out)
         return out;
     }
 
-    private aluInstruction(irInputs: [Bit, Bit, Bit, Bit], s4: Bit, s5: Bit, s6: Bit): { out4: Bit, out5: Bit, out6: Bit } {
+    private aluInstruction(irInputs: [Bit, Bit, Bit, Bit], s4: Bit, s5: Bit, s6: Bit): { ais4: Bit, ais5: Bit, ais6: Bit } {
+
+        const output: { ais4: Bit, ais5: Bit, ais6: Bit } = { ais4: 0, ais5: 0, ais6: 0 }
+
         const [b0, b1, b2, b3] = irInputs;
         this.controlLogicCore.aluInstruction_step6_andGateM_opCode.setInputs([b1, b2, b3]);
         this.controlLogicCore.aluInstruction_step6_not.setInputs(
@@ -197,11 +216,11 @@ export class ControlUnit {
             this.controlLogicCore.aluInstruction_step6_not.getOutput()
         ]);
 
-        return ({
-            out4: this.controlLogicCore.aluInstruction_step4_andGate.getOutput(),
-            out5: this.controlLogicCore.aluInstruction_step5_andGate.getOutput(),
-            out6: this.controlLogicCore.aluInstruction_step6_andGateM.getOutput()
-        });
+        output.ais4 = this.controlLogicCore.aluInstruction_step4_andGate.getOutput();
+        output.ais5 = this.controlLogicCore.aluInstruction_step5_andGate.getOutput();
+        output.ais6 = this.controlLogicCore.aluInstruction_step6_andGateM.getOutput();
+
+        return output;
 
 
     }
@@ -336,7 +355,7 @@ export class ControlUnit {
         this.ir.setInputs(this.controlLogicCore.ir_andGateS.getOutput());
     }
 
-    private tmpS(a: Bit, clks: Bit) {
+    private setTMP(a: Bit, clks: Bit) {
         this.controlLogicCore.tmp_andGateS.setInputs(a, clks);
         this.tmp.setInputs(
             this.controlLogicCore.tmp_andGateS.getOutput()
