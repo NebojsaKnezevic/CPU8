@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { Alu } from "../CPU8/logic/alu";
-import type { IAluInputs, IAluOutputs } from "../interface/interfaces";
+import type { Bit, IAluInputs, IAluOutputs } from "../interface/interfaces";
 import { numberToByte } from "../constants/byte-conversion";
 
 // export interface IAluInputs{
@@ -51,7 +51,7 @@ describe("Alu", () => {
 
         alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
-        
+
         const expectedOutput: IAluOutputs = {
             aLarger: 1,
             equal: 0,
@@ -76,7 +76,7 @@ describe("Alu", () => {
         }
         alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
-        
+
         const expectedOutput: IAluOutputs = {
             aLarger: 0,
             equal: 0,
@@ -99,7 +99,7 @@ describe("Alu", () => {
         }
         alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
-        
+
         const expectedOutput: IAluOutputs = {
             aLarger: 0,
             equal: 0,
@@ -122,7 +122,7 @@ describe("Alu", () => {
         }
         alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
-        
+
         const expectedOutput: IAluOutputs = {
             aLarger: 0,
             equal: 1,
@@ -145,7 +145,7 @@ describe("Alu", () => {
         }
         alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
-        
+
         const expectedOutput: IAluOutputs = {
             aLarger: 0,
             equal: 1,
@@ -168,7 +168,7 @@ describe("Alu", () => {
         }
         alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
-        
+
         const expectedOutput: IAluOutputs = {
             aLarger: 0,
             equal: 1,
@@ -177,7 +177,7 @@ describe("Alu", () => {
             carryOut: 0
         }
         expect(aluOutput).toEqual(expectedOutput);
-       
+
     });
 
     it("3 OPCODE: 0, 0, 1 == SHR(ROR) Aka DIVIDER by 2", () => {
@@ -191,13 +191,13 @@ describe("Alu", () => {
         }
         alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
-        
+
         const expectedOutput: IAluOutputs = {
             aLarger: 1,
             equal: 0,
             zero: 0,
             out: numberToByte(6),
-            carryOut: 0
+            carryOut: 1
         }
 
         expect(aluOutput).toEqual(expectedOutput);
@@ -214,7 +214,7 @@ describe("Alu", () => {
         }
         alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
-        
+
         const expectedOutput: IAluOutputs = {
             aLarger: 1,
             equal: 0,
@@ -237,13 +237,13 @@ describe("Alu", () => {
         }
         alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
-        
+
         const expectedOutput: IAluOutputs = {
             aLarger: 1,
             equal: 0,
             zero: 0,
             out: numberToByte(38),
-            carryOut: 0
+            carryOut: 1
         }
 
         expect(aluOutput).toEqual(expectedOutput);
@@ -260,7 +260,7 @@ describe("Alu", () => {
         }
         alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
-        
+
         const expectedOutput: IAluOutputs = {
             aLarger: 1,
             equal: 0,
@@ -283,7 +283,7 @@ describe("Alu", () => {
         }
         alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
-        
+
         const expectedOutput: IAluOutputs = {
             aLarger: 1,
             equal: 0,
@@ -291,7 +291,7 @@ describe("Alu", () => {
             out: numberToByte(2),
             carryOut: 0
         }
-        
+
         expect(aluOutput).toEqual(expectedOutput);
     });
 
@@ -306,7 +306,7 @@ describe("Alu", () => {
         }
         alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
-        
+
         const expectedOutput: IAluOutputs = {
             aLarger: 0,
             equal: 1,
@@ -314,7 +314,7 @@ describe("Alu", () => {
             out: numberToByte(0),
             carryOut: 0
         }
-        
+
         expect(aluOutput).toEqual(expectedOutput);
     });
 
@@ -329,7 +329,7 @@ describe("Alu", () => {
         }
         alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
-        
+
         const expectedOutput: IAluOutputs = {
             aLarger: 1,
             equal: 0,
@@ -351,7 +351,7 @@ describe("Alu", () => {
         }
         alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
-        
+
         const expectedOutput: IAluOutputs = {
             aLarger: 1,
             equal: 0,
@@ -374,7 +374,7 @@ describe("Alu", () => {
         }
         alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
-        
+
         const expectedOutput: IAluOutputs = {
             aLarger: 0,
             equal: 1,
@@ -397,7 +397,7 @@ describe("Alu", () => {
         }
         alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
-        
+
         const expectedOutput: IAluOutputs = {
             aLarger: 1,
             equal: 0,
@@ -420,7 +420,7 @@ describe("Alu", () => {
         }
         alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
-        
+
         const expectedOutput: IAluOutputs = {
             aLarger: 1,
             equal: 0,
@@ -431,7 +431,7 @@ describe("Alu", () => {
         expect(aluOutput).toEqual(expectedOutput);
     });
 
-    
+
     it("4 OPCODE: 0, 1, 1 == Not8 ", () => {
         const aluInput: IAluInputs = {
             a: numberToByte(128),
@@ -443,7 +443,7 @@ describe("Alu", () => {
         }
         alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
-        
+
         const expectedOutput: IAluOutputs = {
             aLarger: 1,
             equal: 0,
@@ -466,7 +466,7 @@ describe("Alu", () => {
         }
         alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
-        
+
         const expectedOutput: IAluOutputs = {
             aLarger: 1,
             equal: 0,
@@ -474,14 +474,14 @@ describe("Alu", () => {
             out: numberToByte(255 - 255),
             carryOut: 0
         };
-   
+
         expect(aluOutput).toEqual(expectedOutput);
     });
 
     it("1 OPCODE: 1, 0, 0 == And8 ", () => {
         const aluInput: IAluInputs = {
             a: numberToByte(255),
-            b: numberToByte(255), 
+            b: numberToByte(255),
             carry: 1,
             decoderInputs: { // opcode
                 a: 1, b: 0, c: 0
@@ -489,7 +489,7 @@ describe("Alu", () => {
         }
         alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
-        
+
         const expectedOutput: IAluOutputs = {
             aLarger: 0,
             equal: 1,
@@ -497,14 +497,14 @@ describe("Alu", () => {
             out: numberToByte(255),
             carryOut: 0
         };
-   
+
         expect(aluOutput).toEqual(expectedOutput);
     });
 
     it("2 OPCODE: 1, 0, 0 == And8 ", () => {
         const aluInput: IAluInputs = {
             a: numberToByte(254),
-            b: numberToByte(255), 
+            b: numberToByte(255),
             carry: 1,
             decoderInputs: { // opcode
                 a: 1, b: 0, c: 0
@@ -512,7 +512,7 @@ describe("Alu", () => {
         }
         alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
-        
+
         const expectedOutput: IAluOutputs = {
             aLarger: 0,
             equal: 0,
@@ -520,14 +520,14 @@ describe("Alu", () => {
             out: numberToByte(254),
             carryOut: 0
         };
-   
+
         expect(aluOutput).toEqual(expectedOutput);
     });
 
     it("3 OPCODE: 1, 0, 0 == And8 ", () => {
         const aluInput: IAluInputs = {
             a: numberToByte(154),
-            b: numberToByte(255), 
+            b: numberToByte(255),
             carry: 1,
             decoderInputs: { // opcode
                 a: 1, b: 0, c: 0
@@ -535,7 +535,7 @@ describe("Alu", () => {
         }
         alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
-        
+
         const expectedOutput: IAluOutputs = {
             aLarger: 0,
             equal: 0,
@@ -543,14 +543,14 @@ describe("Alu", () => {
             out: numberToByte(154),
             carryOut: 0
         };
-   
+
         expect(aluOutput).toEqual(expectedOutput);
     });
 
     it("4 OPCODE: 1, 0, 0 == And8 ", () => {
         const aluInput: IAluInputs = {
             a: numberToByte(254),
-            b: numberToByte(155), 
+            b: numberToByte(155),
             carry: 1,
             decoderInputs: { // opcode
                 a: 1, b: 0, c: 0
@@ -558,7 +558,7 @@ describe("Alu", () => {
         }
         alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
-        
+
         const expectedOutput: IAluOutputs = {
             aLarger: 1,
             equal: 0,
@@ -566,14 +566,15 @@ describe("Alu", () => {
             out: numberToByte(154),
             carryOut: 0
         };
-   
+        console.log(aluOutput, expectedOutput)
         expect(aluOutput).toEqual(expectedOutput);
+
     });
 
     it("5 OPCODE: 1, 0, 0 == And8 ", () => {
         const aluInput: IAluInputs = {
             a: numberToByte(0),
-            b: numberToByte(155), 
+            b: numberToByte(155),
             carry: 1,
             decoderInputs: { // opcode
                 a: 1, b: 0, c: 0
@@ -581,7 +582,7 @@ describe("Alu", () => {
         }
         alu.setInputsTest(aluInput);
         const aluOutput: IAluOutputs = alu.getOutput();
-        
+
         const expectedOutput: IAluOutputs = {
             aLarger: 0,
             equal: 0,
@@ -589,7 +590,7 @@ describe("Alu", () => {
             out: numberToByte(0),
             carryOut: 0
         };
-   
+
         expect(aluOutput).toEqual(expectedOutput);
     });
 
@@ -602,7 +603,7 @@ describe("Alu", () => {
         };
         alu.setInputsTest(aluInput);
         const aluOutput = alu.getOutput();
-    
+
         const expectedOutput: IAluOutputs = {
             aLarger: 0,
             equal: 1,
@@ -610,10 +611,10 @@ describe("Alu", () => {
             out: numberToByte(0),
             carryOut: 0
         };
-    
+
         expect(aluOutput).toEqual(expectedOutput);
     });
-    
+
     it("2 OPCODE: 1, 0, 1 == Or8 ", () => {
         const aluInput: IAluInputs = {
             a: numberToByte(0),
@@ -623,7 +624,7 @@ describe("Alu", () => {
         };
         alu.setInputsTest(aluInput);
         const aluOutput = alu.getOutput();
-    
+
         const expectedOutput: IAluOutputs = {
             aLarger: 0,
             equal: 0,
@@ -631,10 +632,10 @@ describe("Alu", () => {
             out: numberToByte(155),
             carryOut: 0
         };
-    
+
         expect(aluOutput).toEqual(expectedOutput);
     });
-    
+
     it("3 OPCODE: 1, 0, 1 == Or8 ", () => {
         const aluInput: IAluInputs = {
             a: numberToByte(170),
@@ -644,7 +645,7 @@ describe("Alu", () => {
         };
         alu.setInputsTest(aluInput);
         const aluOutput = alu.getOutput();
-    
+
         const expectedOutput: IAluOutputs = {
             aLarger: 1,
             equal: 0,
@@ -652,10 +653,10 @@ describe("Alu", () => {
             out: numberToByte(255),
             carryOut: 0
         };
-    
+
         expect(aluOutput).toEqual(expectedOutput);
     });
-    
+
     it("4 OPCODE: 1, 0, 1 == Or8 ", () => {
         const aluInput: IAluInputs = {
             a: numberToByte(15),
@@ -665,7 +666,7 @@ describe("Alu", () => {
         };
         alu.setInputsTest(aluInput);
         const aluOutput = alu.getOutput();
-    
+
         const expectedOutput: IAluOutputs = {
             aLarger: 0,
             equal: 0,
@@ -673,10 +674,10 @@ describe("Alu", () => {
             out: numberToByte(255),
             carryOut: 0
         };
-    
+
         expect(aluOutput).toEqual(expectedOutput);
     });
-    
+
     it("5 OPCODE: 1, 0, 1 == Or8 ", () => {
         const aluInput: IAluInputs = {
             a: numberToByte(204),
@@ -686,7 +687,7 @@ describe("Alu", () => {
         };
         alu.setInputsTest(aluInput);
         const aluOutput = alu.getOutput();
-    
+
         const expectedOutput: IAluOutputs = {
             aLarger: 1,
             equal: 0,
@@ -694,7 +695,7 @@ describe("Alu", () => {
             out: numberToByte(255),
             carryOut: 0
         };
-    
+
         expect(aluOutput).toEqual(expectedOutput);
     });
 
@@ -703,125 +704,40 @@ describe("Alu", () => {
     // equal,    // bit 2
     // less,     // bit 1
 
-    it("1 OPCODE: 1, 1, 0 == Comparator8 ", () => {
-        const aluInput: IAluInputs = {
-            a: numberToByte(204),
-            b: numberToByte(51),
-            carry: 0,
-            decoderInputs: { a: 1, b: 1, c: 0 }
-        };
-        alu.setInputsTest(aluInput);
-        const aluOutput = alu.getOutput();
-    
-        const expectedOutput: IAluOutputs = {
-            aLarger: 1,
-            equal: 0,
-            zero: 0,
-            out: numberToByte(4),
-            carryOut: 0
-        };
-    
-        expect(aluOutput).toEqual(expectedOutput);
-        expect(aluOutput.aLarger).toBe(1);
-        expect(aluOutput.equal).toBe(0);
+    it("should compute a XOR b correctly", () => {
+        const tests = [
+            { a: 204, b: 51, expected: 255, aLarger:1, equal:0 },
+            { a: 51, b: 204, expected: 255, aLarger:0, equal:0  },
+            { a: 100, b: 101, expected: 1, aLarger:0, equal:0  },
+            { a: 2, b: 1, expected: 3, aLarger:1, equal:0  },
+            { a: 222, b: 2, expected: 220 , aLarger:1, equal:0  },
+        ];
+
+        for (const { a, b, expected, aLarger, equal } of tests) {
+            const aluInput: IAluInputs = {
+                a: numberToByte(a,),
+                b: numberToByte(b),
+                carry: 0,
+                decoderInputs: { a: 1, b: 1, c: 0 }
+            };
+            alu.setInputsTest(aluInput);
+            const aluOutput = alu.getOutput();
+
+            const expectedOutput: IAluOutputs = {
+                aLarger: aLarger as Bit,
+                equal: equal as Bit,
+                zero: 0,
+                out: numberToByte(expected),
+                carryOut: 0
+            };
+            console.log(expectedOutput.out)
+            expect(aluOutput).toEqual(expectedOutput);
+        }
     });
-    
-    it("2 OPCODE: 1, 1, 0 == Comparator8 ", () => {
-        const aluInput: IAluInputs = {
-            a: numberToByte(51),
-            b: numberToByte(204),
-            carry: 0,
-            decoderInputs: { a: 1, b: 1, c: 0 }
-        };
-        alu.setInputsTest(aluInput);
-        const aluOutput = alu.getOutput();
-    
-        const expectedOutput: IAluOutputs = {
-            aLarger: 0,
-            equal: 0,
-            zero: 0,
-            out: numberToByte(1),
-            carryOut: 0
-        };
-    
-        expect(aluOutput).toEqual(expectedOutput);
-        expect(aluOutput.aLarger).toBe(0);
-        expect(aluOutput.equal).toBe(0);
-    });
-    
-    it("3 OPCODE: 1, 1, 0 == Comparator8 ", () => {
-        const aluInput: IAluInputs = {
-            a: numberToByte(100),
-            b: numberToByte(100),
-            carry: 0,
-            decoderInputs: { a: 1, b: 1, c: 0 }
-        };
-        alu.setInputsTest(aluInput);
-        const aluOutput = alu.getOutput();
-    
-        const expectedOutput: IAluOutputs = {
-            aLarger: 0,
-            equal: 1,
-            zero: 0,
-            out: numberToByte(2),
-            carryOut: 0
-        };
-    
-        expect(aluOutput).toEqual(expectedOutput);
-        expect(aluOutput.aLarger).toBe(0);
-        expect(aluOutput.equal).toBe(1);
-    });
-    
-    it("4 OPCODE: 1, 1, 0 == Comparator8 ", () => {
-        const aluInput: IAluInputs = {
-            a: numberToByte(0),
-            b: numberToByte(1),
-            carry: 0,
-            decoderInputs: { a: 1, b: 1, c: 0 }
-        };
-        alu.setInputsTest(aluInput);
-        const aluOutput = alu.getOutput();
-    
-        const expectedOutput: IAluOutputs = {
-            aLarger: 0,
-            equal: 0,
-            zero: 0,
-            out: numberToByte(1),
-            carryOut: 0
-        };
-    
-        expect(aluOutput).toEqual(expectedOutput);
-        expect(aluOutput.aLarger).toBe(0);
-        expect(aluOutput.equal).toBe(0);
-    });
-    
-    it("5 OPCODE: 1, 1, 0 == Comparator8 ", () => {
-        const aluInput: IAluInputs = {
-            a: numberToByte(255),
-            b: numberToByte(0),
-            carry: 0,
-            decoderInputs: { a: 1, b: 1, c: 0 }
-        };
-        alu.setInputsTest(aluInput);
-        const aluOutput = alu.getOutput();
-    
-        const expectedOutput: IAluOutputs = {
-            aLarger: 1,
-            equal: 0,
-            zero: 0,
-            out: numberToByte(4),
-            carryOut: 0
-        };
-    
-        expect(aluOutput).toEqual(expectedOutput);
-        expect(aluOutput.aLarger).toBe(1);
-        expect(aluOutput.equal).toBe(0);
-    });
-    
-    
- 
-    
 
 
-    
+
+
+
+
 });

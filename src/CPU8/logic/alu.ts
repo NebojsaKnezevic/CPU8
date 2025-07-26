@@ -100,12 +100,17 @@ export class Alu {
     
     }
 
+    setCarryIn(c: Bit){
+        this.aluInput.carry = c;
+    }
+
     setInputsTest(input: IAluInputs) {
         this.setInputs(input);
     }
 
     getOutput(): IAluOutputs {
         const input = this.aluInput
+
         
         this.output = {
             aLarger: 0,
@@ -131,19 +136,22 @@ export class Alu {
         this.handleAnd(input, e);
         this.handleOr(input, f);
         this.handleCmp(input, g);
+        this.handleZero();
+        
 
-        this.zero.setInput(this.output.out);
-
-        this.output = {
-            ...this.output,
-            zero: this.zero.getOutput()
-        }
+        
         return this.output;
     }
 
     private controlledBufferChipLogic(a: Bit, value: Bit) {
         if (a === 1) return value;
         else return 0;
+    }
+
+    private handleZero(){
+        this.zero.setInput(this.output.out);
+        this.output.zero = this.zero.getOutput()
+        
     }
 
     private handleAdder(input: IAluInputs, x: Bit){
@@ -239,14 +247,19 @@ export class Alu {
             this.output = {
                 ...this.output,
                 out: this.cmpEnable.getData(result, x),
-
+                aLarger: greater,
+                equal: equal
+            }
+        }
+        else 
+        {
+            this.output = {
+                ...this.output,
+                aLarger: greater,
+                equal: equal
             }
         }
 
-        this.output = {
-            ...this.output,
-            aLarger: greater,
-            equal: equal
-        }
+       
     }
 }

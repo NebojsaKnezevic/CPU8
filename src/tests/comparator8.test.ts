@@ -36,4 +36,12 @@ describe("Comparator8", () => {
         expect(gt).toBe(1);
         expect(eq).toBe(0);
     });
+
+    it("should detect A > B", () => {
+        comp.setInputs(numberToByte(254), numberToByte(155));
+        const [ gt, eq] = comp.getOutput();
+   
+        expect(gt).toBe(1);
+        expect(eq).toBe(0);
+    });
 });
