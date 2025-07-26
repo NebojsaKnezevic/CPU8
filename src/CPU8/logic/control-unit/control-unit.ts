@@ -28,6 +28,9 @@ export class ControlUnit {
     private iar: Register;
     private ir: Register;
 
+    private flags: ByteMemory;
+    private carryIn: BitMemory;
+
     private ram: Ram;
 
     // private clock: Clock;
@@ -58,6 +61,7 @@ export class ControlUnit {
         acc: Register,
         iar: Register,
         ir: Register,
+        flags: ByteMemory
         // clock: Clock
     ) {
         this.alu = alu;
@@ -82,6 +86,9 @@ export class ControlUnit {
         //I add new bus just in case here so that it doesnt alter the real bus somehow.
         this.inner_decoder3x8_enable = new EnableGate(new Bus);
         this.inner_decoder3x8_not = new NotGate();
+
+        this.flags = flags;
+        this.carryIn = new BitMemory();
     }
 
     setInputs(clockInput: [Bit, Bit, Bit]) {
@@ -107,23 +114,67 @@ export class ControlUnit {
         const { dis4, dis5, dis6 } = this.dataInstruction(decoderOutput, s4, s5, s6);
         const jri = this.jumpRegisterInstruction(decoderOutput, s4);
         const { jais4, jais5 } = this.jumpAddressInstruction(decoderOutput, s4, s5);
-       
+        const flagsOutput = this.handleFlagInputs(this.flags, [b4, b5, b6, b7]);
+        const { jcaezS4, jcaezS5, jcaezS6 } = this.jumpCAEZInstruction(decoderOutput, flagsOutput, s4, s5, s6);
+        const rf = this.resetFlags(decoderOutput, s4);
+
 
         //####### ENABLE
         this.enableRegisters([b4, b5, b6, b7], clke, [ais5, lsis4], [ais4, lsis5b, jri]);
-        this.enableBus1([s1, dis4]);
-        this.enableIAR([s1, dis4, jais4], clke);
-        this.enableRAM([s2, lsis5a, dis5, jais5], clke);
-        this.enableACC([s3, ais6, dis6], clke);
+        this.enableBus1([s1, dis4, rf, jcaezS4]);
+        this.enableIAR([s1, dis4, jais4, jcaezS4], clke);
+        this.enableRAM([s2, lsis5a, dis5, jais5, jcaezS6], clke);
+        this.enableACC([s3, ais6, dis6, jcaezS5], clke);
+        this.enableCarry(ais5);
 
         //####### SET
         this.setRegisters([b6, b7], clks, [ais6, lsis5a, dis5]);
-        this.setMAR([s1, lsis4, dis4, jais4], clks);
-        this.setACC([s1, ais5, dis4], clks);
+        this.setMAR([s1, lsis4, dis4, jais4, jcaezS4], clks);
+        this.setACC([s1, ais5, dis4, jcaezS4], clks);
         this.setIR([s2], clks);
-        this.setIAR([s3, dis6, jri, jais5], clks);
+        this.setIAR([s3, dis6, jri, jais5, jcaezS5, jcaezS6], clks);
         this.setTMP(ais4, clks);
         this.setRAM([lsis5b], clks);
+        this.setFLAGS([ais5, rf], clks);
+    }
+
+    private resetFlags(decoderOutput: Byte, s4: Bit): Bit {
+        const [b0, b1, b2, b3, b4, b5, b6, b7] = decoderOutput;
+        this.controlLogicCore.flagReset_and.setInputs(b6, s4);
+        return this.controlLogicCore.flagReset_and.getOutput();
+    }
+
+    private jumpCAEZInstruction(decoderOutput: Byte, caezFlagsOutput: Bit, s4: Bit, s5: Bit, s6: Bit): { jcaezS4: Bit, jcaezS5: Bit, jcaezS6: Bit } {
+        const output: { jcaezS4: Bit, jcaezS5: Bit, jcaezS6: Bit } = { jcaezS4: 0, jcaezS5: 0, jcaezS6: 0 };
+
+        const [b0, b1, b2, b3, b4, b5, b6, b7] = decoderOutput;
+
+        this.controlLogicCore.jump_caez_and1.setInputs(s4, b5);
+        this.controlLogicCore.jump_caez_and2.setInputs(s5, b5);
+        this.controlLogicCore.jump_caez_andM.setInputs([caezFlagsOutput, s6, b5]);
+
+        output.jcaezS4 = this.controlLogicCore.jump_caez_and1.getOutput();
+        output.jcaezS5 = this.controlLogicCore.jump_caez_and2.getOutput();
+        output.jcaezS6 = this.controlLogicCore.jump_caez_andM.getOutput();
+        // console.log(output)
+        return output;
+    }
+
+    private handleFlagInputs(flags: ByteMemory, inputs: [Bit, Bit, Bit, Bit]): Bit {
+        const [b4, b5, b6, b7] = inputs;
+        const [zero, equal, aLarger, carry] = flags.getData();
+        this.controlLogicCore.flagZ_and.setInputs(zero, b7);
+        this.controlLogicCore.flagE_and.setInputs(equal, b6);
+        this.controlLogicCore.flagA_and.setInputs(aLarger, b5);
+        this.controlLogicCore.flagC_and.setInputs(carry, b4);
+
+        this.controlLogicCore.flags_Input_handle.setInputs([
+            this.controlLogicCore.flagZ_and.getOutput(),
+            this.controlLogicCore.flagE_and.getOutput(),
+            this.controlLogicCore.flagA_and.getOutput(),
+            this.controlLogicCore.flagC_and.getOutput()
+        ]);
+        return this.controlLogicCore.flags_Input_handle.getOutput();
     }
 
     private jumpAddressInstruction(decoderOutput: Byte, s4: Bit, s5: Bit): { jais4: Bit, jais5: Bit } {
@@ -343,6 +394,13 @@ export class ControlUnit {
         this.ram.setOnBus(this.controlLogicCore.ram_andGateE.getOutput()); //Manually set write flag to 0
     }
 
+    private enableCarry(C: Bit) {
+        const zercarryo: Bit = this.carryIn.getOutput();
+        this.controlLogicCore.enableCarry_and.setInputs(C, zercarryo);
+
+        this.alu.setCarryIn(this.controlLogicCore.enableCarry_and.getOutput());
+    }
+
     private setRAM(inputs: Bit[], clks: Bit) {
         this.controlLogicCore.ram_OrmGateS.setInputs(inputs);
         this.controlLogicCore.ram_andGateS.setInputs(this.controlLogicCore.ram_OrmGateS.getOutput(), clks);
@@ -360,6 +418,28 @@ export class ControlUnit {
         this.tmp.setInputs(
             this.controlLogicCore.tmp_andGateS.getOutput()
         );
+
+        this.carryIn.setInputs(a, 
+            this.flags.getData()[3]
+        )
+    }
+
+    private setFLAGS(inputs: Bit[], clks: Bit) {
+
+        this.controlLogicCore.flags_OrmGateS.setInputs(inputs);
+        this.controlLogicCore.flags_and.setInputs(
+            clks,
+            this.controlLogicCore.flags_OrmGateS.getOutput()
+        );
+
+        const setFlags = this.controlLogicCore.flags_and.getOutput();
+
+        const zero = this.alu.getOutput().zero;
+        const equal = this.alu.getOutput().equal;
+        const aLarger = this.alu.getOutput().aLarger;
+        const carry = this.alu.getOutput().carryOut;
+
+        this.flags.setInputsFromNonBus([zero, equal, aLarger, carry, 0, 0, 0, 0], setFlags);
     }
 
 

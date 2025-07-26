@@ -1,42 +1,47 @@
 import type { Bit } from "../../interface/interfaces";
-import { AndGate, NotGate, XorGate } from "./logic-gates";
+import { AndGate, AndGateM, NotGate, OrGate, XorGate } from "./logic-gates";
 
 
 
 
 export class Comparator{
-    private not: [NotGate, NotGate];
-    private and: [AndGate, AndGate];
     private xor: XorGate;
+    private not: NotGate;
+    private andm: AndGateM;
+    private and: AndGate;
+    private or: OrGate;
+
 
     constructor(){
-        this.not = Array.from({length: 2}, ()=> new NotGate()) as [NotGate, NotGate];
-        this.and = Array.from({length: 2}, ()=> new AndGate()) as [AndGate, AndGate];
+        this.not = new NotGate();
+        this.and = new AndGate();
         this.xor = new XorGate();
+        this.andm = new AndGateM();
+        this.or = new OrGate();
     }
 
-    setInputs(a: Bit, b: Bit){
-        this.not[0].setInputs(a);
-        const na = this.not[0].getOutput();
+    setInputs(a: Bit, b: Bit, aboveEqual: Bit = 1, aLarger: Bit = 0){
 
-        this.not[1].setInputs(b);
-        const nb = this.not[1].getOutput();
+        this.xor.setInputs(a,b);
+        const xorOutput = this.xor.getOutput(); // c
 
-        this.and[0].setInputs(na, b);
-        this.and[1].setInputs(a, nb);
+        this.not.setInputs(xorOutput);
+        const noXorOutput = this.not.getOutput();
 
-        const and1 = this.and[0].getOutput();
-        const and2 = this.and[1].getOutput();
+        this.and.setInputs(aboveEqual, noXorOutput); // equal
 
-        this.xor.setInputs(and1, and2);
+        this.andm.setInputs([aboveEqual, xorOutput, a]); 
+        const andmOutput = this.andm.getOutput();
+
+        this.or.setInputs(andmOutput, aLarger); // a larger
 
     }
 
     getOutput(): [Bit,Bit,Bit]{
         return[
-            this.and[0].getOutput(),    // A < b
-            this.and[1].getOutput(),    // A > b
-            this.xor.getOutput(),       // A != b
+            this.and.getOutput(),    
+            this.or.getOutput(),    
+            this.xor.getOutput(),      
         ];
     }
 }

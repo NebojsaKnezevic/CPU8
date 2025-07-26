@@ -20,10 +20,10 @@ export class Shr {
 
     setInputs(a: Byte, carryIn: Bit = 0) {
         this.r1.setInputsFromNonBus(a);
-        let r1Output = this.r1.getData();
+        const r1Output = this.r1.getData();
 
         const result: Byte = Array(8).fill(0) as Byte;
-        this.carryOut = result[result.length - 1]
+        this.carryOut = r1Output[r1Output.length - 1]
         for (let i = a.length - 1; i > 0 ; i--) {
             result[i] = r1Output[i - 1];
         }

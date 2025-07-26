@@ -26,11 +26,14 @@ export class ByteMemory {
     }
 
     // Use carefully and only when needed!!!!!!!
-    setInputsFromNonBus(a: Byte){
-        const output: Byte = a;
-        for (let i = 0; i < output.length; i++) {
-            this.byte[i].setInputs(1, output[i]);
+    setInputsFromNonBus(a: Byte, s: Bit = 1){
+        if(s){
+            const output: Byte = a;
+            for (let i = 0; i < output.length; i++) {
+                this.byte[i].setInputs(1, output[i]);
+            }
         }
+      
     }
 
     //SHOULD NOT BE USED, ONLY FOR TESTING PURPOSES!!!!!!

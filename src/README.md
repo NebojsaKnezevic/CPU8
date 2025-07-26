@@ -78,6 +78,24 @@ To build a fully working 8-bit CPU, the following components are required:
 
 
 
+| Opcode                 | Operands     | Mnemonic     | Description                                                                 |
+|------------------------|--------------|--------------|-----------------------------------------------------------------------------|
+| 1000 rarb              | RA, RB       | ADD RA,RB    | Adds RA and RB, stores result in RA; updates Carry and Zero flags           |
+| 1001 rarb              | RA, RB       | SHR RA,RB    | Shifts RA right by the number of bits in RB                                 |
+| 1010 rarb              | RA, RB       | SHL RA,RB    | Shifts RA left by the number of bits in RB                                  |
+| 1011 rarb              | RA, RB       | NOT RA,RB    | Inverts (bitwise NOT) the bits in RA                                        |
+| 1100 rarb              | RA, RB       | AND RA,RB    | Bitwise AND between RA and RB, result goes to RA                            |
+| 1101 rarb              | RA, RB       | OR RA,RB     | Bitwise OR between RA and RB, result goes to RA                             |
+| 1110 rarb              | RA, RB       | XOR RA,RB    | Bitwise XOR between RA and RB, result goes to RA                            |
+| 1111 rarb              | RA, RB       | CMP RA,RB    | Compares RA and RB, sets CAEZ flags: Carry, Above, Equal, Zero              |
+| 0000 rarb              | RA, RB       | LD RA,RB     | Loads value from memory address in RB into RA                               |
+| 0001 rarb              | RA, RB       | ST RA,RB     | Stores RA into memory at the address held in RB                             |
+| 0010 00rb xxxxxxxx     | RB, Data     | DATA RB,Data | Loads 8-bit immediate value into RB                                         |
+| 0011 00rb              | RB           | JMPR RB      | Jumps to the address contained in RB                                        |
+| 0100 0000 xxxxxxxx     | Addr         | JMP Addr     | Jumps to absolute memory address                                            |
+| 0101 0110 Caez xxxxxxxx| Flags, Addr  | JCAEZ        | Jumps to address if one of CAEZ flags is set                                |
+| 0000 (after JCAEZ)     | —            | CLF          | Clears (resets) all flags                                                   |
+
 
 
 

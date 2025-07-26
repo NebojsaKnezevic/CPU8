@@ -11,27 +11,27 @@ import { byteToNumber, numberToByte } from "../../constants/byte-conversion";
 
 // OP Code: 000 (0)
 // Operacija: ADD
-// Opis: Sabira A + B
+// Opis: Sabira RA + RB i upisuje rezultat u RB
 // Komponenta: Adder8
 
 // OP Code: 001 (1)
 // Operacija: SHR (Shift Right)
-// Opis: Pomera sve bitove A udesno; najviši bit se puni sa carry
+// Opis: Pomera sve bitove RA udesno; najviši bit se puni sa carry, upisuje rezultat u RB
 // Komponenta: Shr
 
 // OP Code: 010 (2)
 // Operacija: SHL (Shift Left)
-// Opis: Pomera sve bitove A ulevo; najniži bit se puni sa carry
+// Opis: Pomera sve bitove RA ulevo; najniži bit se puni sa carry, upisuje rezultat u RB
 // Komponenta: Shl
 
 // OP Code: 011 (3)
 // Operacija: NOT
-// Opis: Inverzija svih bitova A (bitwise NOT)
+// Opis: Inverzija svih bitova RA (bitwise NOT) i upisivanje rezultata u RB
 // Komponenta: Not8
 
 // OP Code: 100 (4)
 // Operacija: AND
-// Opis: Bitovni AND između A i B
+// Opis: Bitovni AND između RA i RB i upis rezultata u RB
 // Komponenta: And8
 
 // OP Code: 101 (5)
@@ -48,317 +48,246 @@ import { byteToNumber, numberToByte } from "../../constants/byte-conversion";
 // Operacija: Nedefinisana (nije korišćena u knjizi)
 // Može se koristiti za buduće proširenje ALU-a
 
+//ALU 1  check ALU TEST!                    1 XXX - XX - XX
+
+//Store is from REG to RAM, Store from RB to RAM address in RA
+//Load is from RAM to REG, Load RB from RAM address in RA
+//Store is from REG to RAM                  0 001 address value
+//Load is from RAM to REG                   0 000 address value
+//STORE: 1 LOAD: 0
+//LOAD from next RAM address into RB,       0 010 -- 00
+//Jump Register: jumps to address in RB     0 011 -- 00
+//Jump Address: Jumps to next byte in RAM   0 100 -- --
+
 
 describe("ALU INSTRUCTIONS: MSB:1 OPCODE:000 RA:00 RB:00", () => {
     const computer = new Computer();
-    computer.insertProgramIntoRAM(0, [
-        [1, 0, 0, 0, 0, 0, 1, 1],
-        [1, 0, 0, 0, 0, 1, 1, 0],
-        [1, 0, 0, 0, 0, 1, 1, 0],
-
-        [1, 0, 0, 1, 1, 0, 1, 0],
-        [1, 0, 0, 1, 1, 1, 1, 1],
-        [1, 0, 0, 1, 1, 1, 1, 1],
-
-        [1, 0, 1, 0, 1, 0, 1, 1],
-        [1, 0, 1, 0, 1, 0, 0, 1],
-
-        [1, 0, 1, 1, 1, 0, 0, 1],
-        [1, 0, 1, 1, 1, 0, 1, 1],
-        [1, 0, 1, 1, 1, 0, 1, 1],
-
-        [1, 1, 0, 0, 0, 1, 1, 0],
-        [1, 1, 0, 0, 1, 0, 1, 1],
-
-        [1, 1, 0, 1, 1, 0, 1, 1],
+  
+    computer.insertProgramIntoRAM(20, [
+        [0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 1, 1, 0, 0, 1, 0, 0],
+        [0, 0, 1, 0, 0, 0, 0, 1],
+        [1, 0, 1, 1, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 1],
+        [0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 0, 1, 0],
+        [0, 0, 1, 0, 0, 0, 0, 1],
+        [0, 0, 0, 0, 0, 1, 1, 1],
+        [1, 0, 0, 0, 0, 0, 0, 1],
+        [0, 0, 1, 0, 0, 0, 1, 1],
+        [0, 1, 1, 0, 0, 1, 0, 0],
+        [0, 0, 1, 0, 0, 0, 1, 0],
+        [0, 1, 0, 0, 1, 1, 0, 1],
+        [1, 0, 0, 0, 1, 1, 1, 0],
+        [0, 0, 1, 0, 0, 0, 1, 1],
+        [0, 0, 0, 0, 1, 1, 1, 1],
+        [0, 0, 1, 0, 0, 0, 1, 0],
+        [0, 0, 0, 1, 0, 0, 0, 1],
+        [1, 0, 0, 0, 1, 1, 1, 0],
+        [0, 0, 1, 0, 0, 0, 1, 1],
+        [0, 0, 0, 1, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0, 0, 1, 0],
+        [0, 0, 0, 1, 0, 0, 0, 0],
+        [1, 0, 0, 1, 1, 1, 1, 0],
+        [0, 0, 1, 0, 0, 0, 0, 1],
+        [0, 1, 0, 0, 0, 1, 0, 0],
+        [0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 0, 0, 0, 0],
+        [1, 0, 0, 1, 0, 1, 0, 0],
+        [0, 0, 1, 0, 0, 0, 1, 1],
+        [0, 0, 0, 0, 0, 0, 0, 1],
+        [0, 0, 1, 0, 0, 0, 1, 0],
+        [0, 0, 0, 1, 0, 0, 0, 0],
+        [1, 0, 0, 1, 1, 1, 1, 0],
+        [0, 0, 1, 0, 0, 0, 1, 1],
+        [0, 0, 0, 1, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0, 0, 1, 0],
+        [0, 0, 0, 1, 0, 0, 0, 0],
+        [1, 0, 1, 0, 1, 1, 1, 0],
+        [0, 0, 1, 0, 0, 0, 0, 1],
+        [0, 1, 0, 0, 0, 1, 0, 0],
+        [0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 0, 0, 0, 0],
+        [1, 0, 1, 0, 0, 1, 0, 0],
+        [0, 0, 1, 0, 0, 0, 1, 1],
+        [1, 0, 1, 0, 0, 1, 1, 0],
+        [0, 0, 1, 0, 0, 0, 1, 0],
+        [0, 0, 0, 1, 0, 0, 0, 0],
+        [1, 0, 1, 0, 1, 1, 1, 0],
+        [0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 1, 1, 1],
+        [1, 0, 1, 1, 0, 0, 0, 1],
+        [0, 0, 1, 0, 0, 0, 0, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 0, 1, 1, 0, 1, 0, 0],
+        [0, 0, 1, 0, 0, 0, 1, 1],
+        [1, 0, 0, 1, 1, 0, 1, 1],
+        [0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 1, 1, 0, 1, 1, 1],
+        [1, 1, 0, 0, 0, 0, 1, 1],
+        [0, 0, 1, 0, 0, 0, 1, 1],
+        [0, 0, 0, 0, 1, 1, 1, 1],
+        [0, 0, 1, 0, 0, 0, 0, 1],
+        [0, 0, 1, 0, 0, 1, 1, 1],
+        [1, 1, 0, 0, 1, 1, 0, 1],
+        [0, 0, 1, 0, 0, 0, 1, 1],
+        [1, 0, 0, 1, 1, 0, 1, 1],
+        [0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 1, 1, 0, 1, 1, 1],
         [1, 1, 0, 1, 0, 0, 1, 1],
+        [0, 0, 1, 0, 0, 0, 1, 1],
+        [0, 0, 0, 0, 1, 1, 1, 1],
+        [0, 0, 1, 0, 0, 0, 0, 1],
+        [0, 0, 1, 0, 0, 1, 1, 1],
+        [1, 1, 0, 1, 1, 1, 0, 1],
+        [0, 0, 1, 0, 0, 0, 1, 1],
+        [0, 1, 1, 1, 0, 0, 1, 1],
+        [0, 0, 1, 0, 0, 0, 0, 1],
+        [0, 1, 1, 1, 0, 1, 0, 0],
+        [1, 1, 1, 0, 1, 1, 0, 1],
+        [0, 0, 1, 0, 0, 0, 1, 0],
+        [0, 0, 0, 0, 1, 1, 1, 1],
+        [0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 0, 0, 0, 0],
+        [1, 1, 1, 0, 0, 0, 1, 0],
+        [0, 0, 1, 0, 0, 0, 1, 0],
+        [0, 0, 0, 0, 1, 1, 1, 1],
+        [0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 0, 0, 0, 0],
+        [1, 1, 1, 1, 0, 0, 1, 0],
+        [0, 0, 1, 0, 0, 0, 1, 0],
+        [0, 0, 0, 0, 1, 1, 1, 1],
+        [0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 0, 0, 0, 0],
+        [1, 1, 1, 1, 1, 0, 0, 0],
+        [0, 0, 1, 0, 0, 0, 1, 0],
+        [0, 0, 0, 1, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 0, 0, 0, 0],
+        [1, 1, 1, 1, 1, 0, 0, 0]
+    ]
+    );
+
+    it("ADD", () => {
+        computer.run(3);
+        expect(computer.registers[1].getData()).toEqual(numberToByte(21))
+        expect(computer.flags.getData()[3]).toBe(1);
+    });
+
+    it("ADD", () => {
+        computer.run(3);
+        expect(computer.registers[1].getData()).toEqual(numberToByte(18))
+        expect(computer.flags.getData()[3]).toBe(0);
+    });
+
+    it("ADD", () => {
+        computer.run(3);
+        expect(computer.registers[2].getData()).toEqual(numberToByte(177))
+    });
+
+    it("ADD", () => {
+        computer.run(3);
+        expect(computer.registers[2].getData()).toEqual(numberToByte(32))
+    });
+
+    it("SHR", () => {
+        computer.run(3);
+        expect(computer.registers[2].getData()).toEqual(numberToByte(8))
+    });
+
+    it("SHR", () => {
+        computer.run(3);
+        expect(computer.registers[0].getData()).toEqual(numberToByte(34))
+    });
+
+    it("SHR", () => {
+        computer.run(3);
+        expect(byteToNumber(computer.registers[2].getData())).toEqual(byteToNumber(numberToByte(0)));
+        expect(computer.flags.getData()[3]).toBe(1);
+    });
+
+
+    it("SHL", () => {
+        computer.run(3);
+        expect(computer.registers[2].getData()).toEqual(numberToByte(33))
+    });
+
+    it("SHL", () => {
+        computer.run(3);
+        expect(computer.registers[0].getData()).toEqual(numberToByte(136))
+    });
+
+
+    it("SHL", () => {
+        computer.run(3);
+        expect(byteToNumber(computer.registers[2].getData())).toEqual(byteToNumber(numberToByte(332 - 256)));
+        expect(computer.flags.getData()[3]).toBe(1);
+    });
+
+    it("NOT", () => {
+        computer.run(2);
+        expect(byteToNumber(computer.registers[1].getData())).toEqual(byteToNumber(numberToByte(240)));
+
+    });
+
+
+    it("NOT", () => {
+        computer.run(2);
+        expect(byteToNumber(computer.registers[0].getData())).toEqual(byteToNumber(numberToByte(0)));
+
+    });
 
-        [1, 1, 1, 0, 0, 0, 1, 1],
-        [1, 1, 1, 0, 0, 0, 1, 1],
-        [1, 1, 1, 0, 0, 0, 1, 1],
+    it("AND", () => {
+        computer.run(3);
+        expect(byteToNumber(computer.registers[3].getData())).toEqual(byteToNumber(numberToByte(19)));
 
-        [1, 1, 1, 1, 0, 0, 1, 1],
-        [1, 1, 1, 1, 0, 1, 1, 0],
-        [1, 1, 1, 1, 1, 0, 0, 1],
-    ]);
-    it("Should add reg A and B: #1 ADD, OP CODE: 000", () => {
+    });
 
+    it("AND", () => {
+        computer.run(3);
+        expect(byteToNumber(computer.registers[1].getData())).toEqual(byteToNumber(numberToByte(7)));
 
-        computer.registers[0].setInputsFromNonBus(numberToByte(1))
-        computer.registers[1].setInputsFromNonBus(numberToByte(2))
+    });
 
-        computer.registers[2].setInputsFromNonBus(numberToByte(3))
-        computer.registers[3].setInputsFromNonBus(numberToByte(4))
+    it("OR", () => {
+        computer.run(3);
+        expect(byteToNumber(computer.registers[3].getData())).toEqual(byteToNumber(numberToByte(191)));
 
-        computer.run(1);
+    });
 
-        // expect(byteToNumber(computer.acc.getData()) ).equal(33 )
+    it("OR", () => {
+        computer.run(3);
+        expect(byteToNumber(computer.registers[1].getData())).toEqual(byteToNumber(numberToByte(47)));
 
-        expect(byteToNumber(computer.registers[3].getData())).equal(5)
-    })
 
-    it("Should add reg A and B: #1 ADD, OP CODE: 000", () => {
+    });
 
+    it("XOR", () => {
+        computer.run(3);
+        expect(byteToNumber(computer.registers[1].getData())).toEqual(byteToNumber(numberToByte(7)));
+    });
 
-        computer.registers[1].setInputsFromNonBus(numberToByte(123))
-        computer.registers[2].setInputsFromNonBus(numberToByte(113))
+    it("XOR", () => {
+        computer.run(3);
+        expect(byteToNumber(computer.registers[2].getData())).toEqual(byteToNumber(numberToByte(31)));
+    });
 
-        computer.run(1);
+    it("CMP", () => {
+        computer.run(3);
+        expect(computer.alu.getOutput().aLarger).toEqual(byteToNumber(numberToByte(1)));
+        expect(computer.alu.getOutput().equal).toEqual(byteToNumber(numberToByte(0)));
+    });
 
-        // expect(byteToNumber(computer.acc.getData()) ).equal(33 )
+    it("CMP", () => {
+        computer.run(3);
+        expect(computer.alu.getOutput().aLarger).toEqual(byteToNumber(numberToByte(0)));
+        expect(computer.alu.getOutput().equal).toEqual(byteToNumber(numberToByte(0)));
+    });
 
-        expect(byteToNumber(computer.registers[2].getData())).equal(236)
-    })
-
-    it("Should add reg A and B: #1 ADD, OP CODE: 000", () => {
-
-
-        computer.registers[1].setInputsFromNonBus(numberToByte(255))
-        computer.registers[2].setInputsFromNonBus(numberToByte(2))
-
-        computer.run(1);
-
-        // expect(byteToNumber(computer.acc.getData()) ).equal(33 )
-
-        expect(byteToNumber(computer.registers[2].getData())).equal(1)
-    })
-
-    it("Should divide A by 2: #2 SHR, OP CODE: 001", () => {
-
-
-        computer.registers[2].setInputsFromNonBus(numberToByte(2))
-
-
-        computer.run(1);
-
-        // expect(byteToNumber(computer.acc.getData()) ).equal(1 )
-
-        expect(byteToNumber(computer.registers[2].getData())).equal(1)
-    })
-
-    it("Should divide A by 2: #2 SHR, OP CODE: 001", () => {
-
-
-        computer.registers[3].setInputsFromNonBus(numberToByte(32))
-
-
-        computer.run(1);
-
-        // expect(byteToNumber(computer.acc.getData()) ).equal(1 )
-
-        expect(byteToNumber(computer.registers[3].getData())).equal(16)
-    })
-
-    it("Should divide A by 2: #2 SHR, OP CODE: 001", () => {
-
-
-        computer.registers[3].setInputsFromNonBus(numberToByte(1))
-
-
-        computer.run(1);
-
-        // expect(byteToNumber(computer.acc.getData()) ).equal(1 )
-
-        expect(byteToNumber(computer.registers[3].getData())).equal(0)
-    })
-
-    it("Should divide A by 2: #3 SHL, OP CODE: 010", () => {
-
-
-        computer.registers[2].setInputsFromNonBus(numberToByte(32))
-
-
-        computer.run(1);
-
-        // expect(byteToNumber(computer.acc.getData()) ).equal(1 )
-
-        expect(byteToNumber(computer.registers[3].getData())).equal(64)
-    })
-
-    it("Should divide A by 2: #3 SHL, OP CODE: 010", () => {
-
-
-        computer.registers[2].setInputsFromNonBus(numberToByte(255))
-
-
-        computer.run(1);
-
-        // expect(byteToNumber(computer.acc.getData()) ).equal(1 )
-
-        expect(byteToNumber(computer.registers[1].getData())).equal(254)
-    })
-
-    it("Not A: #4 NOT, OP CODE: 011", () => {
-
-
-        computer.registers[2].setInputsFromNonBus(numberToByte(255))
-
-
-        computer.run(1);
-
-        // expect(byteToNumber(computer.acc.getData()) ).equal(1 )
-
-        expect(byteToNumber(computer.registers[1].getData())).equal(0)
-    })
-
-    it("Not A: #4 NOT, OP CODE: 011", () => {
-
-
-        computer.registers[2].setInputsFromNonBus(numberToByte(0))
-
-
-        computer.run(1);
-
-        // expect(byteToNumber(computer.acc.getData()) ).equal(1 )
-
-        expect(byteToNumber(computer.registers[3].getData())).equal(255)
-    })
-
-    it("Not A: #4 NOT, OP CODE: 011", () => {
-
-
-        computer.registers[2].setInputsFromNonBus(numberToByte(75))
-
-
-        computer.run(1);
-
-        // expect(byteToNumber(computer.acc.getData()) ).equal(1 )
-
-        expect(byteToNumber(computer.registers[3].getData())).equal(180)
-    })
-
-
-    it("And A & B: #5 And, OP CODE: 100", () => {
-
-        computer.registers[1].setInputsFromNonBus(numberToByte(175))
-        computer.registers[2].setInputsFromNonBus(numberToByte(75))
-
-
-        computer.run(1);
-
-        // expect(byteToNumber(computer.acc.getData()) ).equal(1 )
-
-        expect(byteToNumber(computer.registers[2].getData())).equal(11)
-    })
-
-    it("And A & B: #5 And, OP CODE: 100", () => {
-
-        computer.registers[2].setInputsFromNonBus(numberToByte(32))
-        computer.registers[3].setInputsFromNonBus(numberToByte(2))
-
-
-        computer.run(1);
-
-        // expect(byteToNumber(computer.acc.getData()) ).equal(1 )
-
-        expect(byteToNumber(computer.registers[3].getData())).equal(0)
-    })
-
-    it("OR A & B: #6 OR, OP CODE: 101", () => {
-
-        computer.registers[2].setInputsFromNonBus(numberToByte(32))
-        computer.registers[3].setInputsFromNonBus(numberToByte(2))
-
-
-        computer.run(1);
-
-        // expect(byteToNumber(computer.acc.getData()) ).equal(1 )
-
-        expect(byteToNumber(computer.registers[3].getData())).equal(34)
-    })
-
-    it("OR A & B: #6 OR, OP CODE: 101", () => {
-
-        computer.registers[0].setInputsFromNonBus(numberToByte(160))
-        computer.registers[3].setInputsFromNonBus(numberToByte(22))
-
-
-        computer.run(1);
-
-        // expect(byteToNumber(computer.acc.getData()) ).equal(1 )
-
-        expect(byteToNumber(computer.registers[3].getData())).equal(182)
-    })
-
-    it("CMP A & B: #7 CMP, OP CODE: 110", () => {
-
-        computer.registers[0].setInputsFromNonBus(numberToByte(160))
-        computer.registers[3].setInputsFromNonBus(numberToByte(22))
-
-
-        computer.run(1);
-
-        // expect(byteToNumber(computer.acc.getData()) ).equal(1 )
-
-        expect(byteToNumber(computer.registers[3].getData())).equal(4)
-
-    })
-
-    it("CMP A & B: #7 CMP, OP CODE: 110", () => {
-
-        computer.registers[0].setInputsFromNonBus(numberToByte(22))
-        computer.registers[3].setInputsFromNonBus(numberToByte(22))
-
-
-        computer.run(1);
-
-        // expect(byteToNumber(computer.acc.getData()) ).equal(1 )
-
-        expect(byteToNumber(computer.registers[3].getData())).equal(2)
-    })
-
-    it("CMP A & B: #7 CMP, OP CODE: 110", () => {
-
-        computer.registers[0].setInputsFromNonBus(numberToByte(2))
-        computer.registers[3].setInputsFromNonBus(numberToByte(22))
-
-
-        computer.run(1);
-
-        // expect(byteToNumber(computer.acc.getData()) ).equal(1 )
-
-        expect(byteToNumber(computer.registers[3].getData())).equal(1)
-    })
-
-    it("CMP WITH NO RESULTS in RegB: #8 CMP, OP CODE: 111", () => {
-
-        computer.registers[0].setInputsFromNonBus(numberToByte(2))
-        computer.registers[3].setInputsFromNonBus(numberToByte(22)) //REG B will keep this value
-
-
-        computer.run(1);
-
-        // expect(byteToNumber(computer.acc.getData()) ).equal(1 )
-
-        expect(byteToNumber(computer.registers[3].getData())).equal(22)
-    })
-
-    it("CMP WITH NO RESULTS in RegB: #8 CMP, OP CODE: 111", () => {
-
-        computer.registers[1].setInputsFromNonBus(numberToByte(2))
-        computer.registers[2].setInputsFromNonBus(numberToByte(122)) //REG B will keep this value
-
-
-        computer.run(1);
-
-        // expect(byteToNumber(computer.acc.getData()) ).equal(1 )
-
-        expect(byteToNumber(computer.registers[2].getData())).equal(122)
-    })
-
-    it("CMP WITH NO RESULTS in RegB: #8 CMP, OP CODE: 111", () => {
-
-        computer.registers[2].setInputsFromNonBus(numberToByte(2))
-        computer.registers[1].setInputsFromNonBus(numberToByte(212)) //REG B will keep this value
-
-
-        computer.run(1);
-
-        // expect(byteToNumber(computer.acc.getData()) ).equal(1 )
-
-        expect(byteToNumber(computer.registers[1].getData())).equal(212)
-    })
-
-    
+    it("CMP", () => {
+        computer.run(3);
+        expect(computer.alu.getOutput().aLarger).toEqual(byteToNumber(numberToByte(0)));
+        expect(computer.alu.getOutput().equal).toEqual(byteToNumber(numberToByte(1)));
+    });
 
 });
