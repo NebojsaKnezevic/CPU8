@@ -6,6 +6,8 @@
 import { byteToNumber, numberToByte } from "./constants/byte-conversion";
 import { Computer } from "./CPU8/computer";
 import { Comparator8 } from "./CPU8/logic/comparator8";
+import type { RamCell } from "./CPU8/memory/ram-cell";
+import type { Byte } from "./interface/interfaces";
 
 
 
@@ -177,7 +179,7 @@ import { Comparator8 } from "./CPU8/logic/comparator8";
 
 // const computer = new Computer();
 // const program = computer.assembler(
-    
+
 //     "DATA R3, 115;"
 //     +"DATA R1, 116;"
 //     +"XOR R3, R1;"
@@ -244,7 +246,7 @@ import { Comparator8 } from "./CPU8/logic/comparator8";
 //         computer.registers[tests[i].RA].setInputsFromNonBus(numberToByte(tests[i].RA_VAL)); //address where to store    REG A
 //         computer.registers[tests[i].RB].setInputsFromNonBus(numberToByte(tests[i].RB_VAL)); //value to store            REG B
 //         computer.run(1)
-        
+
 
 //         // console.log("STORE:", {
 //         //     address: tests[i].RA_VAL,
@@ -285,32 +287,138 @@ import { Comparator8 } from "./CPU8/logic/comparator8";
 
 const computer = new Computer();
 
-computer.insertProgramIntoRAM(111,
-    computer.assembler(
 
-        "DATA R1, 51;"
-        +"DATA R0, 51;"
-        +"XOR R1, R0;"
-        +"JCAEZ, 0;"
+//subtract 210-216
+computer.insertProgramIntoRAM(221,
+    computer.assembler(
+        "ST R2, R3;"
+        + "NOT R0,R0;"
+        + "DATA R2, 1;"
+        + "ADD R2, R0;"
+        + "ADD R1, R0;"
+        + "NOT R0, R0;"
+        + "ADD R2, R0;"
+        + "DATA R2, 2;"
+        + "LD R2, R3;"
+        + "JMPR --, R3;"
     )
 );
+
+// //increment R0 227-230
+// computer.insertProgramIntoRAM(227,
+//     computer.assembler(
+//         "DATA R2, 1;"
+//         + "ADD R2, R0;"
+//         + "ADD R2, R3;"
+//         + "JMPR --, R3;"
+//     )
+// );
+
+// computer.insertProgramIntoRAM(245,
+//     computer.assembler(
+
+//         "CLF;"
+//         +"ADD R0, R2;"
+//         +"JMPR, R3;"
+//     )
+// );
+
+//Znaci SHL na R0 I SHR na R1 se rade svaki put, stim sto se vrednost R0 dodaje u rezultat kad je R1 neparan
+//mul R1 241
+computer.insertProgramIntoRAM(233,
+    computer.assembler(
+        "ST R2, R3;"
+        + "DATA R2, 0;" //234, 235 
+        +"SHR R1, R1;" //236 Check if R1 is uneven
+        +"JC, 240;" //237, 238 If carry, that means its uneven, then jump to 240
+        +"JMP, 243;" //239, 240
+        +"CLF;" //241
+        +"ADD R0, R2;" //242
+        +"SHL R0, R0;" //243
+        +"AND R1,R1;" //244
+        +"JZ, 248;" //245, 246
+        +"JMP, 236;" //247, 248
+        +"XOR R2, R0;" //249 R0 = A XOR B
+        +"XOR R0, R2;" //250 R1 = B XOR (A XOR B) = A
+        +"XOR R2, R0;" //251 R0 = (A XOR B) XOR A = B
+        +"DATA R2, 2;" //252, 253
+        +"LD R2, R3;" //254, 255
+        +"JMPR --,R3;" //256
+    )
+);
+
 computer.insertProgramIntoRAM(0,
     computer.assembler(
-        "DATA R0, 152;"
-        +"DATA R1, 51;"
-        +"ADD R0, R1;"
-        +"ADD R0, R1;"
-        +"JC, 111;"
-        // +"DATA R2, 16;"
-
- 
+        "JMP, 0;"
     )
 );
 
 
+computer.insertProgramIntoRAM(10,
+    computer.assembler(
+        "DATA R0, 27;" //10, 11
+        + "DATA R1, 7;" //12, 13
+        + "DATA R2, 2;" //14, 15
+        + "DATA R3, 20;" //16, 17
+        + "JMP, 221;" //18, 19
+        + "DATA R2, 2;" //20, 21
+        + "DATA R3, 26;" //22, 23
+        + "JMP, 233;" //24, 25
+        + "JMP, 0;" 
+        // + "CMP R1, R0;"
+        // + "JA, 210;"
+    )
+);
+computer.run(127)
+ // 3, 37; 6, 16; 12, 8; 24, 4, 48, 2, 96, 0
 
+// console.log(computer.assembler(
+//     "DATA R0, 152;"
+//     +"DATA R1, 51;"
+//     +"ADD R0, R1;"
+//     +"ADD R0, R1;"
+//     // +"JC, 111;"
+//     // // +"DATA R2, 16;"
+//     +"CLF;"
 
+// ))
 
 // setInterval(() => computer.run(1), 1);
-computer.run(27)
-console.log(byteToNumber(computer.iar.getData()))
+
+console.log("R0 ", byteToNumber(computer.registers[0].getData()), computer.registers[0].getData())
+console.log("R1 ", byteToNumber(computer.registers[1].getData()), computer.registers[1].getData())
+console.log("R2 ", byteToNumber(computer.registers[2].getData()), computer.registers[2].getData())
+console.log("R3 ", byteToNumber(computer.registers[3].getData()), computer.registers[3].getData())
+console.log("IAR ", byteToNumber(computer.iar.getData()), computer.iar.getData())
+console.log("FLAGS ", byteToNumber(computer.flags.getData()), computer.flags.getData())
+
+const ramContent: Byte[] = computer.ram.ramList();
+
+const app = document.getElementById("ram")
+for (let i = 0; i < ramContent.length; i++) {
+    const div = document.createElement('div')
+    const isIAR = i === byteToNumber(computer.iar.getData()) ;
+    const isIR = i === byteToNumber(computer.ram.getMarOutput());
+
+    if (isIAR) div.classList.add('iar');
+    if (isIR) div.classList.add('ir');
+    div.innerText = `${i} - ${byteToNumber(ramContent[i])} - ${ramContent[i]}`
+    app?.appendChild(div);
+}
+
+console.log(app)
+
+
+// setInterval(() => computer.run(11), 1000)
+
+
+const emulator = new Worker("emulatorWorker.js");
+emulator.postMessage({ cmd: "LOAD", program: "print('hi')" });
+emulator.postMessage({ cmd: "STEP" });
+emulator.postMessage({ cmd: "STEP" });
+emulator.postMessage({ cmd: "GET_STATE" })
+
+
+emulator.onmessage = (e) => {
+    console.log("Main got:", e.data);
+  };

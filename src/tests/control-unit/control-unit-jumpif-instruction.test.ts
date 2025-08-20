@@ -7,13 +7,13 @@ describe("JUMPIF", () => {
 
     computer.insertProgramIntoRAM(111,
         computer.assembler(
-
             "DATA R1, 1;"
             + "DATA R0, 0;"
             + "AND R1, R0;"
             + "JZ, 0;"
         )
     );
+
     computer.insertProgramIntoRAM(0,
         computer.assembler(
             "DATA R0, 152;"
@@ -22,8 +22,6 @@ describe("JUMPIF", () => {
             + "ADD R0, R1;"
             + "JC, 111;"
             // +"DATA R2, 16;"
-
-
         )
     );
 
