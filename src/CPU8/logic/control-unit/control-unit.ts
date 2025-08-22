@@ -113,7 +113,7 @@ export class ControlUnit {
         const { lsis4, lsis5a, lsis5b } = this.loadStoreInstruction(decoderOutput, s4, s5);
         const { dis4, dis5, dis6 } = this.dataInstruction(decoderOutput, s4, s5, s6);
         const jri = this.jumpRegisterInstruction(decoderOutput, s4);
-        const { jais4, jais5 } = this.jumpAddressInstruction(decoderOutput, s4, s5);
+        const { jais4, jais5, jais6 } = this.jumpAddressInstruction(decoderOutput, s4, s5, s6);
         const flagsOutput = this.handleFlagInputs(this.flags, [b4, b5, b6, b7]);
         const { jcaezS4, jcaezS5, jcaezS6 } = this.jumpCAEZInstruction(decoderOutput, flagsOutput, s4, s5, s6);
         const rf = this.resetFlags(decoderOutput, s4);
@@ -121,10 +121,10 @@ export class ControlUnit {
 
         //####### ENABLE
         this.enableRegisters([b4, b5, b6, b7], clke, [ais5, lsis4], [ais4, lsis5b, jri]);
-        this.enableBus1([s1, dis4, rf, jcaezS4]);
+        this.enableBus1([s1, dis4, rf, jcaezS4, jais4]);
         this.enableIAR([s1, dis4, jais4, jcaezS4], clke);
         this.enableRAM([s2, lsis5a, dis5, jais5, jcaezS6], clke);
-        this.enableACC([s3, ais6, dis6, jcaezS5], clke);
+        this.enableACC([s3, ais6, dis6, jcaezS5, jais6], clke);
         this.enableCarry(ais5);
 
         //####### SET
@@ -136,6 +136,7 @@ export class ControlUnit {
         this.setTMP(ais4, clks);
         this.setRAM([lsis5b], clks);
         this.setFLAGS([ais5, rf], clks);
+        // this.setR3([jcaezS5, jais6], clks);
     }
 
     private resetFlags(decoderOutput: Byte, s4: Bit): Bit {
@@ -177,17 +178,19 @@ export class ControlUnit {
         return this.controlLogicCore.flags_Input_handle.getOutput();
     }
 
-    private jumpAddressInstruction(decoderOutput: Byte, s4: Bit, s5: Bit): { jais4: Bit, jais5: Bit } {
-        const output: { jais4: Bit, jais5: Bit } = { jais4: 0, jais5: 0 }
+    private jumpAddressInstruction(decoderOutput: Byte, s4: Bit, s5: Bit, s6: Bit): { jais4: Bit, jais5: Bit, jais6: Bit } {
+        const output: { jais4: Bit, jais5: Bit, jais6: Bit } = { jais4: 0, jais5: 0, jais6: 0 }
 
         const [b0, b1, b2, b3, b4, b5, b6, b7] = decoderOutput;
 
         this.controlLogicCore.jump_address_and1.setInputs(b4, s4);
         this.controlLogicCore.jump_address_and2.setInputs(b4, s5);
+        this.controlLogicCore.jump_address_and3.setInputs(b4, s6);
+
 
         output.jais4 = this.controlLogicCore.jump_address_and1.getOutput();
         output.jais5 = this.controlLogicCore.jump_address_and2.getOutput();
-
+        output.jais6 = this.controlLogicCore.jump_address_and3.getOutput();
         // console.log(output)
         // console.log([b0, b1, b2, b3, b4, b5, b6, b7])
 
@@ -354,6 +357,15 @@ export class ControlUnit {
         // if (this.controlLogicCore.regB_set_r3_andM.getOutput() == 1) console.log("r3")
     }
 
+    private setR3(inputs: Bit[], clks: Bit) {
+        this.controlLogicCore.R3orm.setInputs(inputs);
+        const input = this.controlLogicCore.R3orm.getOutput();
+        this.controlLogicCore.R3and.setInputs(clks, input);
+        this.R[3].setInputs(
+            this.controlLogicCore.R3and.getOutput()
+        );
+    }
+
     private enableBus1(inputs: Bit[]) {
         this.controlLogicCore.bus1_OrmE.setInputs(inputs)
         this.bus1.setInputs(this.controlLogicCore.bus1_OrmE.getOutput());
@@ -419,7 +431,7 @@ export class ControlUnit {
             this.controlLogicCore.tmp_andGateS.getOutput()
         );
 
-        this.carryIn.setInputs(a, 
+        this.carryIn.setInputs(a,
             this.flags.getData()[3]
         )
     }

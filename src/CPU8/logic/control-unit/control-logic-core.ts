@@ -18,6 +18,7 @@ export class ControlLogicCore {
     public ram_OrmGateS: OrGateM;
     public flags_OrmGateS: OrGateM;
     public flags_Input_handle: OrGateM;
+    public R3orm : OrGateM;
 
 
     // AND gates
@@ -41,6 +42,7 @@ export class ControlLogicCore {
     public jump_register_and: AndGate;
     public jump_address_and1: AndGate;
     public jump_address_and2: AndGate;
+    public jump_address_and3: AndGate;
     public flags_and: AndGate;
     public flagC_and: AndGate;
     public flagA_and: AndGate;
@@ -50,6 +52,7 @@ export class ControlLogicCore {
     public jump_caez_and2: AndGate;
     public flagReset_and: AndGate;
     public enableCarry_and: AndGate;
+    public R3and: AndGate;
 
     //OR gates
     public inner_decoder3x8_or: OrGate;
@@ -104,6 +107,7 @@ export class ControlLogicCore {
         this.rB_OrmgatS = new OrGateM();
         this.flags_OrmGateS = new OrGateM();
         this.flags_Input_handle = new OrGateM();
+        this.R3orm = new OrGateM();
 
 
         // AND gates
@@ -127,6 +131,7 @@ export class ControlLogicCore {
         this.jump_register_and = new AndGate();
         this.jump_address_and1 = new AndGate();
         this.jump_address_and2 = new AndGate();
+        this.jump_address_and3 = new AndGate();
         this.flags_and = new AndGate();
 
         this.flagC_and = new AndGate();
@@ -139,6 +144,8 @@ export class ControlLogicCore {
 
         this.flagReset_and = new AndGate();
         this.enableCarry_and = new AndGate();
+
+        this.R3and = new AndGate();
 
 
 

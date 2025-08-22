@@ -2,8 +2,8 @@ import { describe, it, expect } from "vitest";
 import { Computer } from "../../CPU8/computer";
 import { byteToNumber, numberToByte } from "../../constants/byte-conversion";
 
-//Store is from REG to RAM
-//Load is from RAM to REG
+//Store is from REG to RAM, Store from RB to RAM address in RA
+//Load is from RAM to REG, Load RB from RAM address in RA
 //STORE: 1 LOAD: 0
 
 

@@ -96,6 +96,7 @@ export class Alu {
     }
 
     setInputs(input: IAluInputs) {
+
         this.aluInput = input;
     
     }
@@ -105,6 +106,7 @@ export class Alu {
     }
 
     setInputsTest(input: IAluInputs) {
+       
         this.setInputs(input);
     }
 
@@ -256,7 +258,7 @@ export class Alu {
             this.output = {
                 ...this.output,
                 aLarger: greater,
-                equal: equal
+                equal: equal,
             }
         }
 

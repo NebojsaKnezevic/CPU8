@@ -49,15 +49,14 @@ export class Computer {
 
         this.ram.setDataManually(startAddress, program);
 
-        this.programStartAddress = startAddress;
+
         this.iar.setInputsFromNonBus(numberToByte(startAddress));
-        this.pc = startAddress;
-        this.programEndAddress = this.programStartAddress + program.length;
+
 
     }
 
     public run(userInputCycleNum?: number) {
-        const val = userInputCycleNum ? this.pc + userInputCycleNum : this.programEndAddress;
+        const val = userInputCycleNum ? this.pc + userInputCycleNum : 1;
         //first cycle is always 23 the rest are 24
         // if (this.pc > this.programEndAddress + 1) throw new Error("Stack overflow! The real thing xD");
         // if (userInputCycleNum !== undefined && userInputCycleNum > this.programEndAddress + 1) throw new Error("Stack overflow! The real thing xD");
@@ -69,11 +68,11 @@ export class Computer {
                 // console.log(this.iar.getData());
             } else {
                 this.runCycle(24);
-         
+
             }
             this.pc++;
             // console.log("RUN");
-                   console.log(this.iar.getData());
+            // console.log(this.iar.getData());
         }
 
 
@@ -104,7 +103,7 @@ export class Computer {
         const result: Byte[] = [];
 
         for (let line of lines) {
-            line = line.replace("  ","").trim();
+            line = line.replace("  ", "").trim();
             const byte: Byte = [0, 0, 0, 0, 0, 0, 0, 0];
             if (line.startsWith("ADD")) { // ADD = 1000
                 line = line.replace("ADD", "").trim();
@@ -126,7 +125,7 @@ export class Computer {
                 line = line.replace("AND", "").trim();
                 byte[0] = 1; byte[1] = 1; byte[2] = 0; byte[3] = 0;
             }
-           
+
             else if (line.startsWith("OR")) { // OR = 1101
                 line = line.replace("OR", "").trim();
                 byte[0] = 1; byte[1] = 1; byte[2] = 0; byte[3] = 1;
@@ -135,7 +134,7 @@ export class Computer {
                 line = line.replace("XOR", "").trim();
                 byte[0] = 1; byte[1] = 1; byte[2] = 1; byte[3] = 0;
             }
-           
+
             else if (line.startsWith("CMP")) { // CMP = 1111
                 line = line.replace("CMP", "").trim();
                 byte[0] = 1; byte[1] = 1; byte[2] = 1; byte[3] = 1;
@@ -153,8 +152,8 @@ export class Computer {
                 byte[0] = 0; byte[1] = 0; byte[2] = 1; byte[3] = 0;
 
                 //IF RB in this case is a value instead of register
-                
-                const [a,b] = line.split(",");
+
+                const [a, b] = line.split(",");
                 const cleaned = b.replace(/\s+/g, "");
                 const parsed = parseInt(cleaned, 10);
 
@@ -163,8 +162,7 @@ export class Computer {
                     result.push(byte);
                     const byte1: Byte = numberToByte(parsed);
                     result.push(byte1);
-                } else
-                {
+                } else {
                     throw new Error("Data instruction error");
                 }
                 continue;
@@ -172,7 +170,7 @@ export class Computer {
             else if (line.startsWith("JMPR")) { // JMPR = 0011
                 line = line.replace("JMPR", "").trim();
                 byte[0] = 0; byte[1] = 0; byte[2] = 1; byte[3] = 1;
-                
+
             }
             else if (line.startsWith("JMP")) { // JMP = 0100
                 line = line.replace("JMP", "").trim();
@@ -184,8 +182,7 @@ export class Computer {
                     result.push(byte);
                     const byte1: Byte = numberToByte(Number(digits[0]));
                     result.push(byte1);
-                } else
-                {
+                } else {
                     throw new Error("JMP instruction error");
                 }
                 continue;
@@ -195,18 +192,18 @@ export class Computer {
                 byte[0] = 0; byte[1] = 1; byte[2] = 0; byte[3] = 1;
 
                 let RB = 'R0';
-               
-                if(line.includes('E')) RB = 'R2';
-                if(line.includes('Z')) RB = 'R1';
-                if(line.includes('E') && line.includes('Z')) RB = 'R3';
+
+                if (line.includes('E')) RB = 'R2';
+                if (line.includes('Z')) RB = 'R1';
+                if (line.includes('E') && line.includes('Z')) RB = 'R3';
                 let RA = 'R0';
-           
-                if(line.includes('C')) RA = 'R2';
-                if(line.includes('A')) RA = 'R1';
-                if(line.includes('C') && line.includes('A')) RA = 'R3';
+
+                if (line.includes('C')) RA = 'R2';
+                if (line.includes('A')) RA = 'R1';
+                if (line.includes('C') && line.includes('A')) RA = 'R3';
                 this.setRA(RA, byte);
                 this.setRB(RB, byte);
-                
+
                 // result.push(byte);
 
                 // const cleaned = line.replace(/\s+/g, "");
@@ -216,8 +213,7 @@ export class Computer {
                     result.push(byte);
                     const byte1: Byte = numberToByte(Number(digits[0]));
                     result.push(byte1);
-                } else
-                {
+                } else {
                     throw new Error("JIF instruction error");
                 }
                 continue;
@@ -226,6 +222,9 @@ export class Computer {
             else if (line.startsWith("CLF")) { // CLF = 0110
                 line = line.replace("CLF", "").trim();
                 byte[0] = 0; byte[1] = 1; byte[2] = 1; byte[3] = 0;
+                byte[4] = 0; byte[5] = 0; byte[6] = 0; byte[7] = 0;
+                result.push(byte);
+                continue;
             }
 
 
@@ -241,7 +240,7 @@ export class Computer {
 
     }
 
-    private setRA(RA: string, byte: Byte){
+    private setRA(RA: string, byte: Byte) {
         if (RA.includes("R0")) {
             byte[4] = 0;
             byte[5] = 0;
@@ -264,7 +263,7 @@ export class Computer {
         }
     }
 
-    private setRB(RB: string, byte: Byte){
+    private setRB(RB: string, byte: Byte) {
         if (RB.includes("R0")) {
             byte[6] = 0;
             byte[7] = 0;
