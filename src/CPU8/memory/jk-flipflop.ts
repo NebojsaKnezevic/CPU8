@@ -1,11 +1,29 @@
 import type { Bit } from "../../interface/interfaces";
-import { NandGate } from "../logic/logic-gates";
 
+/**
+ * Interface representing the behavior of a JK flip-flop.
+ * @deprecated do not use, it doesn't work properly!
+ */
+export interface IJKFF {
+    /**
+     * Sets the inputs for the JK flip-flop.
+     * @param j - The J input bit.
+     * @param k - The K input bit.
+     * @param clock - The clock input bit.
+     */
+    setInputs(j: Bit, k: Bit, clock: Bit): void;
+
+    /**
+     * Gets the output of the JK flip-flop.
+     * @returns A tuple: [Q, !Q].
+     */
+    getOutput(): [Bit, Bit];
+}
 
 
 //https://www.youtube.com/watch?v=j6krFp511H
 //https://www.youtube.com/watch?v=t2LZtaNck_g
-export class JKFF {
+export class JKFF implements IJKFF {
     private masterQ: Bit = 0;
     private slaveQ: Bit = 0;
     private previousClock: Bit = 0;
@@ -35,4 +53,3 @@ export class JKFF {
         return [this.slaveQ, this.slaveQ === 1 ? 0 : 1];
     }
 }
-

@@ -2,20 +2,37 @@ import type { Bit } from "../../../interface/interfaces";
 import { BitMemory } from "../../memory/bit-memory";
 import { NotGate } from "../logic-gates";
 
+/**
+ * @deprecated This counter is obsolete and should not be used.
+ * It has been replaced with `Counter2`.
+ */
+export interface ICounter {
+    /**
+     * @deprecated Do not use — use Counter2 instead.
+     */
+    setInputs(clkin: Bit, input?: Bit): void;
 
-//for removal, replaced with counter2
-export class Counter {
+    /**
+     * @deprecated Do not use — use Counter2 instead.
+     */
+    getOutput(): [Bit, Bit, Bit, Bit, Bit, Bit];
+}
+
+/**
+ * @deprecated For removal, replaced with `Counter2`.
+ */
+export class Counter implements ICounter {
     private bits: BitMemory[];
     private not: NotGate;
 
     constructor() {
         this.bits = Array.from({ length: 12 }, () => new BitMemory());
         this.not = new NotGate();
-
     }
 
-    //first cklin then input!!!!
-    setInputs(clkin: Bit, input: Bit = 1) {
+    // first clkIn then input!!!!
+    /** @deprecated Do not use — use Counter2 instead. */
+    public setInputs(clkin: Bit, input: Bit = 1): void {
         this.not.setInputs(clkin);
         let notclk: Bit = this.not.getOutput();
 
@@ -31,12 +48,12 @@ export class Counter {
         this.bits[9].setInputs(clkin, this.bits[8].getOutput());
         this.bits[10].setInputs(clkin, this.bits[9].getOutput());
         this.bits[11].setInputs(notclk, this.bits[10].getOutput());
-
     }
 
-    getOutput(): [Bit, Bit, Bit, Bit, Bit, Bit] {
-        return this.bits.filter((b, i) => i % 2 !== 0).map(b => b.getOutput()) as [Bit, Bit, Bit, Bit, Bit, Bit];
-
+    /** @deprecated Do not use — use Counter2 instead. */
+    public getOutput(): [Bit, Bit, Bit, Bit, Bit, Bit] {
+        return this.bits
+            .filter((b, i) => i % 2 !== 0)
+            .map(b => b.getOutput()) as [Bit, Bit, Bit, Bit, Bit, Bit];
     }
-
 }

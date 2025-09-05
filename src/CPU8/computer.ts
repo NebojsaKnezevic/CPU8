@@ -84,7 +84,6 @@ export class Computer implements IComputer8 {
     public controlUnit = new ControlUnit(this.alu, this.ram, this.registers, this.tmp, this.bus1, this.acc, this.iar, this.ir, this.flags);
     public clock = new Clock();
 
-
     private programStartAddress: number = 0;
     private programEndAddress: number = 0;
     private isFirstRun: boolean = true;

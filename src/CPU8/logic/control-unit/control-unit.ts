@@ -33,7 +33,7 @@ export interface IControlUnit {
 
 
 export class ControlUnit implements IControlUnit {
-    private R: Register[];
+    public R: Register[];
     private tmp: Register;
     private bus1: Bus1;
 
