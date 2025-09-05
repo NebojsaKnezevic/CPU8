@@ -2,9 +2,26 @@ import type { Bit } from "../../../interface/interfaces";
 import { AndGate, NotGate, OrGate } from "../logic-gates";
 import { Counter2 } from "./counter2";
 
+/**
+ * Interface reprensting stepper chip.
+ */
+export interface IStepper {
+    /**
+     * Sets the inputs for the stepper.
+     * @param cklin Clock input
+     */
+    setInputs(cklin: Bit): void;
 
+    /**
+     * Returns the output bits of the stepper, 6 bits for 6 steps.
+     */
+    getOutput(): [Bit, Bit, Bit, Bit, Bit, Bit];
+}
 
-export class Stepper {
+/**
+ * Stepper for controlling sequential logic inside control unit.
+ */
+export class Stepper implements IStepper {
     private or: OrGate;
     private ands: AndGate[];
     private nots: NotGate[];
@@ -19,13 +36,14 @@ export class Stepper {
         this.or.setInputs(1,1);
     }
 
-    setInputs(cklin: Bit ) {
+    /** Sets the clock input and calculates internal signals */
+    public setInputs(cklin: Bit) {
         //stage 1 
         this.counter.setInputs(cklin);
         const counterOut = this.counter.getOutput();
-        const counterLenght = this.counter.getOutput().length - 1;
+        const counterLenght = counterOut.length - 1;
 
-        // console.log("counter: ",this.counter.getOutput())
+        // console.log("counter: ", counterOut)
 
         this.nots[0].setInputs(counterOut[0])
         this.or.setInputs(counterOut[counterLenght], this.nots[0].getOutput());
@@ -45,12 +63,11 @@ export class Stepper {
         this.nots[5].setInputs(counterOut[5])
         this.ands[4].setInputs(counterOut[4], this.nots[5].getOutput());
 
-
         //stage 2
         // this.counter.setInputs();
     }
 
-    getOutput(): [Bit, Bit, Bit, Bit, Bit, Bit] {
+    public getOutput(): [Bit, Bit, Bit, Bit, Bit, Bit] {
         return [
             this.or.getOutput(),
             this.ands[0].getOutput(),

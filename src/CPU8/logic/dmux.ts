@@ -3,6 +3,7 @@ import { AndGate, NotGate } from "./logic-gates";
 
 /**
  * Interface for a 1-to-2 demultiplexer.
+ * @deprecated do not use.
  */
 export interface IDMux {
   /**

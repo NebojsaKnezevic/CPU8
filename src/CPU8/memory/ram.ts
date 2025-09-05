@@ -1,4 +1,4 @@
-import { byteToNumber, numberToByte } from "../../constants/byte-conversion";
+import { numberToByte } from "../../constants/byte-conversion";
 import type { Bit, Byte, Word } from "../../interface/interfaces";
 import { Bus } from "../bus/bus";
 import { Decoder4x16 } from "../logic/decoder4x16";
@@ -6,9 +6,56 @@ import { RamCell } from "./ram-cell";
 import { Register } from "./register";
 // import { Register } from "./register";
 
+/**
+ * Interface for Ram class
+ */
+export interface IRam {
+    /** MAR register */
+    mar: Register;
+
+    /** Row decoder */
+    rowDecoder: Decoder4x16;
+
+    /** Column decoder */
+    columnDecoder: Decoder4x16;
+
+    /** 16x16 RAM cell grid */
+    dataGrid: RamCell[][];
+
+    /** Set MAR inputs from system bus 
+    * @param s - Set signal
+    */
+    setMarInputs(s: Bit): void;
+
+    /** Get MAR output as Byte */
+    getMarOutput(): Byte;
+
+    /** Set inputs to RAM cell addressed by MAR 
+    * @param s - Set signal
+    * @param e - Enable signal
+    */
+    setInputs(s: Bit, e: Bit): RamCell;
+
+    /** Set value in RAM (internal write) */
+    setInRam(x: Bit): RamCell;
+
+    /** Set value on bus from RAM (read) */
+    setOnBus(x: Bit): RamCell;
+
+    /** Set multiple bytes in RAM manually starting from an address */
+    setDataManually(startAddress: number, data: Byte[]): void;
+
+    /** Get a RAM cell manually by address */
+    getRamCellManually(startAddress: number): RamCell;
+
+    /** Flatten the RAM grid into a list of bytes 
+    * @deprecated Dangerous to use! Avoid at all costs. 
+    */
+    ramList(): Byte[];
+}
 
 
-export class Ram {
+export class Ram implements IRam {
     public mar: Register;
 
     public rowDecoder: Decoder4x16;
@@ -120,22 +167,6 @@ export class Ram {
         return result;
     }
 
-    // private pickRamCellTest(address: Byte) {
-    //     let input = address;
-
-    //     this.columnDecoder.setInputs(input[4], input[5], input[6], input[7]);
-    //     this.rowDecoder.setInputs( input[0], input[1], input[2], input[3]);
-
-    //     let column = this.columnDecoder.getOutput();
-    //     let row = this.rowDecoder.getOutput();
-
-    //     let x = this.rowColumn(column.reverse() as Word)
-    //     let y = this.rowColumn(row)
-    //     console.log(row, column)
-    //     // console.log(y,x)
-    //     return this.dataGrid[y][x];
-    // }
-
     private rowColumn(x: Word): number {
         let res = 0;
         for (let i = 0; i < x.length; i++) {
@@ -144,6 +175,4 @@ export class Ram {
         }
         return res;
     }
-
-
 }

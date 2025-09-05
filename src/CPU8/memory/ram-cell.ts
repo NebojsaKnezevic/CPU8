@@ -1,11 +1,30 @@
-import type { Bit } from "../../interface/interfaces";
+import type { Bit, Byte } from "../../interface/interfaces";
 import { Bus } from "../bus/bus";
 import { AndGate, OrGate } from "../logic/logic-gates";
 import { Register } from "./register";
 
+/**
+ * Interface representing a single RAM cell.
+ */
+export interface IRamCell {
+    /**
+     * Sets the inputs for the RAM cell.
+     * @param h - Horizontal select bit.
+     * @param v - Vertical select bit.
+     * @param s - Set bit.
+     * @param e - Enable bit.
+     * @param reset - Reset bit.
+     */
+    setInputs(h: Bit, v: Bit, s: Bit, e: Bit, reset: Bit): void;
 
+    /**
+     * Retrieves the data stored in the RAM cell.
+     * @returns The current stored byte.
+     */
+    getData(): Byte;
+}
 
-export class RamCell{
+export class RamCell implements IRamCell {
     private h: Bit = 0;
     private v: Bit = 0;
     private s: Bit = 0;
@@ -24,7 +43,7 @@ export class RamCell{
         this.register = new Register(bus);
     }
 
-    setInputs(h: Bit, v: Bit, s: Bit, e: Bit, reset: Bit) {
+    public setInputs(h: Bit, v: Bit, s: Bit, e: Bit, reset: Bit): void {
         this.h = h;
         this.v = v;
         this.s = s;
@@ -53,8 +72,7 @@ export class RamCell{
         this.reset = 0;
     }
 
-    getData(){
+    public getData(): Byte {
         return this.register.getDataOnBus(0);
     }
-    
 }
