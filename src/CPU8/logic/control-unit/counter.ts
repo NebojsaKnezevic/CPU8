@@ -3,7 +3,7 @@ import { BitMemory } from "../../memory/bit-memory";
 import { NotGate } from "../logic-gates";
 
 
-
+//for removal, replaced with counter2
 export class Counter {
     private bits: BitMemory[];
     private not: NotGate;

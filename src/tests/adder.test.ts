@@ -29,9 +29,9 @@ describe("Full Adder", () => {
         ];
 
         for (let i = 0; i < inputs.length; i++) {
-            const [a,b,c] = inputs[i];
-            adder.setInputs(a,b,c);
-            expect(adder.getOutput()).toEqual(expectedOutputs[i]);
+            const [a, b, c] = inputs[i];
+            adder.setInputs(a, b, c);
+            expect(adder.getOutput()).toEqual(expectedOutputs[i] );
         }
     });
 });
