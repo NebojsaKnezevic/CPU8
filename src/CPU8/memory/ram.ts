@@ -9,12 +9,12 @@ import { Register } from "./register";
 
 
 export class Ram {
-    private mar: Register;
+    public mar: Register;
 
-    private rowDecoder: Decoder4x16;
-    private columnDecoder: Decoder4x16;
+    public rowDecoder: Decoder4x16;
+    public columnDecoder: Decoder4x16;
 
-    private dataGrid: RamCell[][];
+    public dataGrid: RamCell[][];
 
     constructor(bus: Bus) {
         this.mar = new Register(bus);
@@ -29,18 +29,18 @@ export class Ram {
     }
 
     setMarInputs(s: Bit) {
-        if(s === 1){
+        if (s === 1) {
             this.mar.setInputs(s);
         }
-       
+
     }
 
-    getMarOutput(){
+    getMarOutput() {
         return [...this.mar.getData()] as Byte
     }
 
     setInputs(s: Bit, e: Bit) {
-    
+
         const ramCell = this.pickRamCell(this.mar.getData());
         // console.log(ramCell)
         ramCell.setInputs(1, 1, s, e, 0);
@@ -49,7 +49,7 @@ export class Ram {
     }
 
     setInRam(x: Bit) {
-    
+
         const ramCell = this.pickRamCell(this.mar.getData());
         // console.log(ramCell)
         ramCell.setInputs(1, 1, x, 0, 0);
@@ -58,7 +58,7 @@ export class Ram {
     }
 
     setOnBus(x: Bit) {
-    
+
         const ramCell = this.pickRamCell(this.mar.getData());
         // console.log(ramCell)
         ramCell.setInputs(1, 1, 0, x, 0);
@@ -67,17 +67,17 @@ export class Ram {
     }
 
     setDataManually(startAddress: number, data: Byte[]) {
-        if(startAddress > 255) throw new Error("Address excedes size of the ram! Avaiable addresses 0 - 255");
-    
-        if(startAddress + data.length - 1 > 255) throw new Error("Not enough address space/memory");
-        
+        if (startAddress > 255) throw new Error("Address excedes size of the ram! Avaiable addresses 0 - 255");
+
+        if (startAddress + data.length - 1 > 255) throw new Error("Not enough address space/memory");
+
         for (let i = 0; i < data.length; i++) {
             this.pickRamCell(numberToByte(startAddress + i)).register.setInputsFromNonBus(data[i]);
         }
     }
 
-    getRamCellManually(startAddress: number){
-        if(startAddress > 255) throw new Error("Address excedes size of the ram! Avaiable addresses 0 - 255");
+    getRamCellManually(startAddress: number) {
+        if (startAddress > 255) throw new Error("Address excedes size of the ram! Avaiable addresses 0 - 255");
         return this.pickRamCell(numberToByte(startAddress));
 
     }
@@ -86,32 +86,33 @@ export class Ram {
         let input = address;
 
         this.columnDecoder.setInputs(input[4], input[5], input[6], input[7]);
-        this.rowDecoder.setInputs( input[0], input[1], input[2], input[3]);
+        this.rowDecoder.setInputs(input[0], input[1], input[2], input[3]);
 
         let column = this.columnDecoder.getOutput();
         let row = this.rowDecoder.getOutput();
 
-        let x = this.rowColumn(column.reverse() as Word)
+        // let x = this.rowColumn(column.reverse() as Word)
+        let x = this.rowColumn(column)
         let y = this.rowColumn(row)
         // console.log(row, column)
         // console.log(y,x)
         return this.dataGrid[y][x];
     }
 
-    public ramList(): Byte[]{
+    public ramList(): Byte[] {
         const result: Byte[] = [];
-        const rows: any[] =   this.dataGrid.map(row => {
+        const rows: any[] = this.dataGrid.map(row => {
             return row.reverse().map(item => item.register.getData()) as Byte[]
         })
-     
-        for(let row in rows){
-          
-           for(let byte of rows[row]){
-            // console.log(byte)
-            result.push(byte)
-           }
+
+        for (let row in rows) {
+
+            for (let byte of rows[row]) {
+                // console.log(byte)
+                result.push(byte)
+            }
         }
-        
+
         // return this.dataGrid.map(row => {
         //     return row.reverse().map(item => item.getData())
         // }) 
@@ -144,5 +145,5 @@ export class Ram {
         return res;
     }
 
-   
+
 }

@@ -10,9 +10,66 @@ import { ByteMemory } from "./memory/byte-memory";
 import { Ram } from "./memory/ram";
 import { Register } from "./memory/register";
 
+/**
+ * Represents a simple 8-bit computer with memory, registers, ALU, and control unit.
+ */
+export interface IComputer8 {
+    /** Main system bus */
+    bus: any;
+    /** RAM memory module */
+    ram: any;
+    /** General-purpose registers */
+    registers: any[];
+    /** Temporary register aka alu input b*/
+    tmp: any;
+    /** Secondary bus for intermediate data */
+    bus1: any;
+    /** Accumulator register where alu result is stored*/
+    acc: any;
+    /** Instruction Address Register */
+    iar: any;
+    /** Instruction Register */
+    ir: any;
+    /** Arithmetic Logic Unit */
+    alu: any;
+    /** Flags memory */
+    flags: any;
+    /** Control unit */
+    controlUnit: any;
+    /** System clock */
+    clock: any;
+
+    /**
+     * Loads a program into RAM starting at the given address.
+     * @param startAddress The RAM address to start loading the program
+     * @param program Array of bytes representing the program
+     */
+    insertProgramIntoRAM(startAddress: number, program: any[]): void;
+
+    /**
+    * @deprecated Use `tick(clockTicks?: number)` instead for cycle control.
+    * Executes the loaded program for a given number of cycles.
+    * @param userInputCycleNum Optional number of cycles to run
+    */
+    run(userInputCycleNum?: number): void;
 
 
-export class Computer {
+    /**
+     * Executes a number of clock ticks manually.
+     * @param clockTicks Number of ticks to execute (default 4)
+     */
+    tick(clockTicks?: number): void;
+
+    /**
+     * Converts an assembly program string into machine code bytes.
+     * @param program Assembly program as string
+     * @returns Array of bytes representing the machine code
+     */
+    assembler(program: string): any[];
+}
+
+
+export class Computer implements IComputer8 {
     public bus = new Bus();
     public ram = new Ram(this.bus);
     public registers = Array.from({ length: 4 }, () => new Register(this.bus));
@@ -38,7 +95,6 @@ export class Computer {
     }
 
     public insertProgramIntoRAM(startAddress: number, program: Byte[]) {
-
         const isValidProgram: boolean = program.every(byte =>
             Array.isArray(byte) &&
             byte.length <= 8 &&
@@ -49,37 +105,42 @@ export class Computer {
 
         this.ram.setDataManually(startAddress, program);
 
-
         this.iar.setInputsFromNonBus(numberToByte(startAddress));
-
-
     }
 
     public run(userInputCycleNum?: number) {
+        console.warn("Warning: run() is deprecated. Use tick() instead.");
         const val = userInputCycleNum ? this.pc + userInputCycleNum : 1;
-        //first cycle is always 23 the rest are 24
-        // if (this.pc > this.programEndAddress + 1) throw new Error("Stack overflow! The real thing xD");
-        // if (userInputCycleNum !== undefined && userInputCycleNum > this.programEndAddress + 1) throw new Error("Stack overflow! The real thing xD");
 
         while (this.pc < val) {
             if (this.isFirstRun) {
                 this.runCycle(23);
                 this.isFirstRun = false;
-                // console.log(this.iar.getData());
             } else {
                 this.runCycle(24);
 
             }
             this.pc++;
-            // console.log("RUN");
-            // console.log(this.iar.getData());
         }
-
-
-
     }
 
     private runCycle(clockTicks: number) {
+        for (let i = 0; i < clockTicks; i++) {
+            this.alu.setInputs({
+                a: this.bus.getOutput(),
+                b: this.bus1.getOutput(),
+                carry: 0,
+                decoderInputs: {
+                    a: 0, b: 0, c: 0 // ADD
+                }
+            });
+
+            this.controlUnit.setInputs(this.clock.getOutput());
+            this.clock.setInputs();
+        }
+    }
+
+    public tick(clockTicks: number = 4) {
         for (let i = 0; i < clockTicks; i++) {
             this.alu.setInputs({
                 a: this.bus.getOutput(),

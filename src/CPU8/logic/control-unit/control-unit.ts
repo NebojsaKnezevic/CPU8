@@ -14,11 +14,26 @@ import { AndGate, AndGateM, NotGate, OrGate, OrGateM } from "../logic-gates";
 import { ControlLogicCore } from "./control-logic-core";
 import { Stepper } from "./stepper";
 
+/**
+ * Interface for the Control Unit of the CPU8 computer.
+ * Provides methods to control instruction execution and access registers.
+ */
+export interface IControlUnit {
+    // /**
+    //  * General-purpose registers R0–R3.
+    //  */
+    // R: Register[];
+
+    /**
+     * Sets the clock input and executes control logic for the current cycle.
+     * @param clockInput An array of three bits: [clk, clke, clks]
+     */
+    setInputs(clockInput: [Bit, Bit, Bit]): void;
+}
 
 
-
-export class ControlUnit {
-    public R: Register[];
+export class ControlUnit implements IControlUnit {
+    private R: Register[];
     private tmp: Register;
     private bus1: Bus1;
 

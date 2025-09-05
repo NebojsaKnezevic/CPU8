@@ -1,11 +1,39 @@
-import type { Bit, IBasic1, IBasic1M } from "../../interface/interfaces";
+import type { Bit } from "../../interface/interfaces";
 
-//you can build entire CPU with NAND OR NOR
+/**
+ * Interface for basic 1-bit gates with variable inputs.
+ */
+export interface IBasicGate {
+  /**
+   * Sets the inputs of the gate.
+   * @param bits - Input bits
+   */
+  setInputs(...bits: Bit[]): void;
 
+  /**
+   * Returns the output of the gate.
+   */
+  getOutput(): Bit;
+}
 
+/**
+ * Interface for basic 1-bit gates that take an array of bits.
+ */
+export interface IBasicGateM {
+  /**
+   * Sets the inputs as an array of bits.
+   * @param inputs - Array of input bits
+   */
+  setInputs(inputs: Bit[]): void;
 
-// NAND Gate
-export class NandGate implements IBasic1 {
+  /**
+   * Returns the output of the gate.
+   */
+  getOutput(): Bit;
+}
+
+/** NAND Gate */
+export class NandGate implements IBasicGate {
   private inputs: Bit[] = [];
   private output: Bit = 0;
   private autoEvaluate: boolean;
@@ -19,6 +47,7 @@ export class NandGate implements IBasic1 {
     if (this.autoEvaluate) this.evaluate();
   }
 
+  /** Evaluates the NAND output */
   evaluate(): void {
     this.output = this.inputs.every(bit => bit === 1) ? 0 : 1;
   }
@@ -28,9 +57,8 @@ export class NandGate implements IBasic1 {
   }
 }
 
-
-// NOT Gate
-export class NotGate implements IBasic1  {
+/** NOT Gate */
+export class NotGate implements IBasicGate {
   private input: Bit = 0;
 
   setInputs(a: Bit): void {
@@ -38,12 +66,12 @@ export class NotGate implements IBasic1  {
   }
 
   getOutput(): Bit {
-    return this.input ? 0 : 1 as Bit;
+    return this.input ? 0 : 1;
   }
 }
 
-// AND Gate
-export class AndGate implements IBasic1  {
+/** AND Gate */
+export class AndGate implements IBasicGate {
   private inputA: Bit = 0;
   private inputB: Bit = 0;
 
@@ -57,7 +85,8 @@ export class AndGate implements IBasic1  {
   }
 }
 
-export class AndGateM implements IBasic1M  {
+/** AND Gate for multiple inputs */
+export class AndGateM implements IBasicGateM {
   private inputs: Bit[] = [];
 
   setInputs(inputs: Bit[]): void {
@@ -69,9 +98,8 @@ export class AndGateM implements IBasic1M  {
   }
 }
 
-
-// OR Gate
-export class OrGate implements IBasic1  {
+/** OR Gate */
+export class OrGate implements IBasicGate {
   private inputA: Bit = 0;
   private inputB: Bit = 0;
 
@@ -85,7 +113,8 @@ export class OrGate implements IBasic1  {
   }
 }
 
-export class OrGateM implements IBasic1M  {
+/** OR Gate for multiple inputs */
+export class OrGateM implements IBasicGateM {
   private inputs: Bit[] = [];
 
   setInputs(inputs: Bit[]): void {
@@ -97,9 +126,8 @@ export class OrGateM implements IBasic1M  {
   }
 }
 
-
-// NOR Gate
-export class NorGate implements IBasic1  {
+/** NOR Gate */
+export class NorGate implements IBasicGate {
   private inputA: Bit = 0;
   private inputB: Bit = 0;
 
@@ -113,8 +141,8 @@ export class NorGate implements IBasic1  {
   }
 }
 
-// XOR Gate
-export class XorGate implements IBasic1  {
+/** XOR Gate */
+export class XorGate implements IBasicGate {
   private inputA: Bit = 0;
   private inputB: Bit = 0;
 
@@ -128,8 +156,8 @@ export class XorGate implements IBasic1  {
   }
 }
 
-// XNOR Gate
-export class XnorGate implements IBasic1  {
+/** XNOR Gate */
+export class XnorGate implements IBasicGate {
   private inputA: Bit = 0;
   private inputB: Bit = 0;
 
@@ -142,5 +170,3 @@ export class XnorGate implements IBasic1  {
     return this.inputA === this.inputB ? 1 : 0;
   }
 }
-
-

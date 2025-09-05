@@ -14,9 +14,40 @@ import { Shr } from "./shr";
 import { ZeroDetector8 } from "./zero-detector8";
 
 
-export class Alu {
+/**
+ * Interface for an 8-bit ALU.
+ */
+export interface IAlu {
+  /**
+   * Sets the input for the ALU.
+   * @param input - Object containing inputs a, b, carry, and decoder inputs
+   */
+  setInputs(input: IAluInputs): void;
 
+  /**
+   * Sets only the carry-in bit.
+   * @param c - Carry-in bit
+   */
+  setCarryIn(c: Bit): void;
 
+  /**
+   * Returns the output of the ALU.
+   * @returns Object containing:
+   *  - out: resulting 8-bit output
+   *  - carryOut: carry-out bit
+   *  - zero: 1 if result is zero
+   *  - aLarger: 1 if input a > input b
+   *  - equal: 1 if input a == input b
+   */
+  getOutput(): IAluOutputs;
+}
+
+/**
+ * 8-bit Arithmetic Logic Unit implementation.
+ * Combines add, shift, logic, and comparison operations.
+ */
+
+export class Alu implements IAlu {
 
     // private nand: NandGate[];
     private decoder3x8: Decoder3x8;
@@ -96,9 +127,7 @@ export class Alu {
     }
 
     setInputs(input: IAluInputs) {
-
         this.aluInput = input;
-    
     }
 
     setCarryIn(c: Bit){
