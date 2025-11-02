@@ -19,10 +19,15 @@ import { Stepper } from "./stepper";
  * Provides methods to control instruction execution and access registers.
  */
 export interface IControlUnit {
-    // /**
-    //  * General-purpose registers R0–R3.
-    //  */
-    // R: Register[];
+    /**
+    * `controlLogicCore` contains all micro-control signals (set, reset, enable, load, etc.)
+    * that drive the CPU components (registers, ALU, memory, program counter) as well as 
+    * the internal state of the control unit itself.  
+    * 
+    * It acts as the "wiring layer" between the decoded instruction logic and the 
+    * hardware-like elements of the simulator.
+    */
+    controlLogicCore: ControlLogicCore;
 
     /**
      * Sets the clock input and executes control logic for the current cycle.
@@ -61,7 +66,7 @@ export class ControlUnit implements IControlUnit {
     private decoder67e_2x4_b: Decoder2x4;
     private decoder67s_2x4_b: Decoder2x4;
 
-    private controlLogicCore: ControlLogicCore;
+    public controlLogicCore: ControlLogicCore;
 
     private inner_decoder3x8: Decoder3x8;
     private inner_decoder3x8_enable: EnableGate;

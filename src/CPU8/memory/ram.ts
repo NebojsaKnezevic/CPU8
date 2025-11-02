@@ -11,7 +11,7 @@ import { Register } from "./register";
  */
 export interface IRam {
     /** MAR register */
-    mar: Register;
+    marl: Register;
 
     /** Row decoder */
     rowDecoder: Decoder4x16;
@@ -56,7 +56,7 @@ export interface IRam {
 
 
 export class Ram implements IRam {
-    public mar: Register;
+    public marl: Register;
 
     public rowDecoder: Decoder4x16;
     public columnDecoder: Decoder4x16;
@@ -64,7 +64,7 @@ export class Ram implements IRam {
     public dataGrid: RamCell[][];
 
     constructor(bus: Bus) {
-        this.mar = new Register(bus);
+        this.marl = new Register(bus);
 
         this.rowDecoder = new Decoder4x16();
         this.columnDecoder = new Decoder4x16();
@@ -77,18 +77,18 @@ export class Ram implements IRam {
 
     setMarInputs(s: Bit) {
         if (s === 1) {
-            this.mar.setInputs(s);
+            this.marl.setInputs(s);
         }
 
     }
 
     getMarOutput() {
-        return [...this.mar.getData()] as Byte
+        return [...this.marl.getData()] as Byte
     }
 
     setInputs(s: Bit, e: Bit) {
 
-        const ramCell = this.pickRamCell(this.mar.getData());
+        const ramCell = this.pickRamCell(this.marl.getData());
         // console.log(ramCell)
         ramCell.setInputs(1, 1, s, e, 0);
         // console.log(ramCell)
@@ -97,7 +97,7 @@ export class Ram implements IRam {
 
     setInRam(x: Bit) {
 
-        const ramCell = this.pickRamCell(this.mar.getData());
+        const ramCell = this.pickRamCell(this.marl.getData());
         // console.log(ramCell)
         ramCell.setInputs(1, 1, x, 0, 0);
         // console.log(ramCell)
@@ -106,7 +106,7 @@ export class Ram implements IRam {
 
     setOnBus(x: Bit) {
 
-        const ramCell = this.pickRamCell(this.mar.getData());
+        const ramCell = this.pickRamCell(this.marl.getData());
         // console.log(ramCell)
         ramCell.setInputs(1, 1, 0, x, 0);
         // console.log(ramCell)
